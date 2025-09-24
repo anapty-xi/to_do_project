@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import profile_info
 
-# Register your models here.
+@admin.register(profile_info)
+class ProfileInfoAdmin(admin.ModelAdmin):
+    list_display = ['sex']
