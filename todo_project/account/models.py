@@ -4,11 +4,11 @@ import datetime
 
 
 class profile_info(User):
-
-    sex = models.TextChoices('M', 'Ж')
-    birthd = models.DateField
-    photo = models.ImageField(upload_to= 'imgs/profile_photos')
-    preview = models.TextField
+    user = models.OneToOneField(User, related_name='account', on_delete=models.CASCADE)
+    sex = models.TextChoices('M', 'Ж', blank=True) #тут ебаная хуйня
+    birthd = models.DateField(blank=True, null=True)
+    photo = models.ImageField(upload_to= 'imgs/profile_photos', blank=True)
+    preview = models.TextField(blank=True)
 
     class Meta:
         ordering = ['first_name']
