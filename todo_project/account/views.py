@@ -28,7 +28,8 @@ def register_view(request):
             if form.cleaned_data['password1'] == form.cleaned_data['password2']:
                 User.objects.create_user(username=form.cleaned_data['username'], email=form.cleaned_data['email'],
                                          password=form.cleaned_data['password1'])
-                profile_info.objects.create(id=User.objects.get(email=form.cleaned_data['email']))                
+                user = User.objects.get(email=form.cleaned_data['email'])                     
+                profile_info.objects.create(id=user.id)            
                 return redirect('/')
     else:
         form = RegisterForm()

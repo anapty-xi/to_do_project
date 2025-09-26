@@ -5,7 +5,7 @@ class RegisterForm(forms.Form):
     username = forms.CharField(label='Юзернейм')
     email = forms.EmailField(label='почта')
     password1 = forms.CharField(label='пароль', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='пароль', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='повторите пароль', widget=forms.PasswordInput)
 
     def clean(self):
         cleaned_data = super().clean()
