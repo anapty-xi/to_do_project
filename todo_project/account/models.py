@@ -4,8 +4,13 @@ import datetime
 
 
 class profile_info(User):
+    class SexChoises(models.TextChoices):
+        male = 'М', ('male')
+        female = 'Ж', ('female')
+        default = '-', ('defailt')
+
     user = models.OneToOneField(User, related_name='account', on_delete=models.CASCADE)
-    sex = models.TextChoices('M', 'Ж', blank=True) #тут ебаная хуйня
+    sex = models.CharField(max_length=1, choices=SexChoises, default=SexChoises.default)
     birthd = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to= 'imgs/profile_photos', blank=True)
     preview = models.TextField(blank=True)
