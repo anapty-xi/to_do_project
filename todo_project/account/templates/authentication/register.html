@@ -1,15 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Регистация</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<div class="container-xl text-center">
+    
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">создать аккаунт</button>
-    </form>
-</body>
-</html>
+
+        <div class="row  justify-content-center">
+            <div class="col g-3">
+                {% bootstrap_field form.username layout='horizontal' size='lg' horizontal_label_class='col' horizontal_field_class='col' %}
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col">
+                {% bootstrap_field form.email layout='horizontal' horizontal_label_class='col' horizontal_field_class='col' %}
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col">
+                {% bootstrap_field form.password1 layout='horizontal' horizontal_label_class='col' horizontal_field_class='col' %}
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col">
+                {% bootstrap_field form.password2 layout='horizontal' horizontal_label_class='col' horizontal_field_class='col' %}
+            </div>
+        </div>
+        
+ 
+
+
+        {% bootstrap_button "зарегистрироваться" button_type="submit" size='lg' %}
+    </form>    
+
+</div>
+{% endblock %}
