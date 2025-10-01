@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth.models import User
-from .models import profile_info
+from .models import user_info
+
 
 
 
@@ -29,8 +30,8 @@ def register_view(request):
             if form.cleaned_data['password1'] == form.cleaned_data['password2']:
                 User.objects.create_user(username=form.cleaned_data['username'], email=form.cleaned_data['email'],
                                         password=form.cleaned_data['password1'])
-                user = User.objects.get(username=form.cleaned_data['username'])                     
-                profile_info.objects.create(id=user.id)            
+                user = User.objects.get(username=form.cleaned_data['username'])
+                user_info.objects.create(user_id=user)
                 return redirect('/')
 
     else:
