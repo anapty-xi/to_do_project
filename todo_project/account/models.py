@@ -9,7 +9,7 @@ class profile_info(User):
         female = 'Ж', ('female')
         default = '-', ('defailt')
 
-    user = models.OneToOneField(User, related_name='account', on_delete=models.CASCADE)
+    
     sex = models.CharField(max_length=1, choices=SexChoises, default=SexChoises.default)
     birthd = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to= 'imgs/profile_photos', blank=True)
