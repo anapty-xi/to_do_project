@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth.models import User
 from .models import user_info
-
+from django.core.exceptions import ValidationError
 
 
 
@@ -17,7 +17,9 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return redirect('/')
+                #return redirect('/homepage')
+            else:
+                form.add_error(field=None, error=ValidationError('неверный логин или пароль'))
     else:
         form = LoginForm()
     return render(request, 'authentication/login.html', {'form': form})
@@ -32,7 +34,7 @@ def register_view(request):
                                         password=form.cleaned_data['password1'])
                 user = User.objects.get(username=form.cleaned_data['username'])
                 user_info.objects.create(user_id=user)
-                return redirect('/')
+                return redirect('/account/login')
 
     else:
         form = RegisterForm()

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account.apps.AccountConfig',
+    'homepage.apps.HomepageConfig',
     'django_bootstrap5',
 ]
 
@@ -126,3 +127,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'madia/')
 MEDIA_URL = '/media/'
+
+LOGIN_REDIRECT_URL = 'homepage/'
+LOGIN_URL = 'login'
+LOGOUT_URL = '/'
+
