@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}аккаунт{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <a>{{ user.user_info.sex }}</a>
+    <a>{{ user.user_info.birthd }}</a>
+    <a>{{ user.user_info.preview }}</a>
+    <a>{{ user.user_info.photo }}</a>
+</div>
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form layout='inline' %}
+        {% bootstrap_button "Save" button_type="submit" button_class="btn-primary" %}
+    </form>
+</div>
+
+{% endblock %}
