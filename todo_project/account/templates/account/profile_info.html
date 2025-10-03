@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}аккаунт{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <img src="{% static 'user_placeholder.png' %}">
+            <a>{{ user.username }} </a> 
+        </div>
+    </div>
+</div>
+<div class="container">
+    {{ a }}
+</div> 
+
+{% endblock %}

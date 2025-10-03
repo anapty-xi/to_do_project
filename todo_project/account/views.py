@@ -5,10 +5,15 @@ from django.contrib.auth.models import User
 from .models import user_info
 from django.core.exceptions import ValidationError
 
+from django.conf import settings
+
 
 
 
 def login_view(request):
+
+    '''вход пользователя в аккаунт'''
+
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -25,7 +30,11 @@ def login_view(request):
     return render(request, 'authentication/login.html', {'form': form})
 
 
+
 def register_view(request):
+
+    '''регистарция пользователя'''
+
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -41,16 +50,15 @@ def register_view(request):
     return render(request, 'authentication/register.html', {'form': form})
 
 
+
 def profile_info(requset):
+    
+    '''рендер страницы с информацией об аккаунте'''
+
     user = requset.user
-    if requset.method == 'POST':
-        form = ProfileInfoForm(requset.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            user_unfo_obj = user_info.objects.get(user_id=user.id)
-            user_unfo_obj.sex = cd['sex']
-    else:
-        form = ProfileInfoForm()
-    return render(requset, 'profile_info.html', {'form': form, 'user': user})
+    a = settings.BASE_DIR
+    return render(requset, 'account/profile_info.html', {'user': user, 'a': a})
+
+
 
 
