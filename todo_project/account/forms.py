@@ -5,7 +5,7 @@ from .models import user_info
 
 
 class RegisterForm(forms.Form):
-    username = forms.CharField(label='Юзернейм')
+    username = forms.CharField(label='логин')
     email = forms.EmailField(label='почта')
     password1 = forms.CharField(label='пароль', widget=forms.PasswordInput)
     password2 = forms.CharField(label='повторите пароль', widget=forms.PasswordInput)
@@ -39,16 +39,19 @@ class RegisterForm(forms.Form):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label='Юзернейм')
+    username = forms.CharField(label='логин')
     password = forms.CharField(label='пароль', widget=forms.PasswordInput)
 
 
 
-class ProfileInfoForm(forms. ModelForm):
+class ProfileInfoForm(forms.Form):
+    username = forms.CharField(label='логин')
+    email = forms.EmailField(label='почта')
+    birthd = forms.DateField(label='дата рождения')
+    sex = forms.ChoiceField(choices=[('male','м'), ('female','ж')])
+    photo = forms.ImageField()
 
-    class Meta:
-        model = user_info
-        fields = ('sex', 'birthd', 'photo', 'preview')
+
 
   
 

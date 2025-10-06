@@ -10,18 +10,41 @@
 
 
 <div class="container-fluid">
-    <div class="row">
+    <div class="row ">
 
-        <div class="col-4">
-            {% if user.user_info.photo == None %}
-                <img src="{% static 'user_placeholder.png' %}">
+        <div class="col-5 g-5 text-center">
+            {% if not user.user_info.photo %}
+                <img src="{% static 'user_placeholder.png' %}" class="img-fluid">
             {% else %}
-                <img src="{{ user.user_info.photo }}">
+                <img src="{{ user.user_info.photo.url }}" class="rounded img-fluid">
             {% endif %}
         </div>
 
-        <div class="col-8">
-            {{ user.username }}
+        <div class="col-7 g-5"> 
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-tit">Ваш аккаунт</h5>
+                    <h6 class="card-subtitle text-body-secondary">{{ user.username }}</h6>
+                    <div class="row">
+
+                        <div class="col gy-4">
+                            <div class="card-text">Пол: {{ user.user_info.sex }}</div> 
+                        </div>
+
+                        <div class="col gy-4">
+                            <div class="card-text">Дата рождения: {{ user.user_info.birthd }}</div>
+                        </div>
+
+                    </div>
+
+                    <div class="row text-center">
+                        <div class="col g-5">
+                            <a href="{% url 'account:profile_info_edit' %}" class="btn btn-primary">Изменить</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>

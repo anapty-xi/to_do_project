@@ -14,7 +14,7 @@ class user_info(models.Model):
     user_id = models.OneToOneField(User, on_delete=models.CASCADE)
     sex = models.CharField(max_length=1, choices=SexChoises, default=SexChoises.default)
     birthd = models.DateField(blank=True, null=True)
-    photo = models.ImageField(upload_to=settings.MEDIA_ROOT, blank=True)
+    photo = models.ImageField(upload_to=settings.MEDIA_ROOT, blank=True, null=True)
 
 
 

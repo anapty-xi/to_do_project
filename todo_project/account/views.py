@@ -61,20 +61,25 @@ def profile_info(request):
 
 
 
-def profile_info_edit(requset):
+def profile_info_edit(request):
     
-    '''рендер страницы для изменения информации об аккаунте'''
+    '''страница для изменения информации об аккаунте'''
 
-    if requset.method == 'POST':
-        form = ProfileInfoForm(requset.POST, requset.FILES)
+    if request.method == 'POST':
+        form = ProfileInfoForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.user_id = requset.user
+            user = request.user
+            cd = form.cleaned_data
+            user.user_info.birthd = cd['birthd']
+            user.user_info.sex = cd['sex']
+            user.user_info.photo = cd['photo']  #фото не сохранилось
+            user.username = cd['username']
+            user.email = cd['email']
             user.save()
-            return redirect('/homepage')
+            return redirect('/account/profile_info')
     else:
         form = ProfileInfoForm()
-    return render(requset, 'account/profile_info_edit.html', {'form': form})
+    return render(request, 'account/profile_info_edit.html', {'form': form})
 
 
 
