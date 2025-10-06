@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from todo_project import settings
+from .models import user_info
 
 
 class RegisterForm(forms.Form):
@@ -44,16 +44,11 @@ class LoginForm(forms.Form):
 
 
 
-class ProfileInfoForm(forms.Form):
+class ProfileInfoForm(forms. ModelForm):
 
-    SEX_CHOISES = {
-        'M': 'male',
-        'Ж': 'female',
-        '-': 'default',     
-    }
+    class Meta:
+        model = user_info
+        fields = ('sex', 'birthd', 'photo', 'preview')
 
-    sex = forms.ChoiceField(choices=SEX_CHOISES)
-    birthd = forms.DateField(required=False)
-    photo = forms.ImageField(required=False)
-    preview = forms.CharField(max_length=300)
+  
 

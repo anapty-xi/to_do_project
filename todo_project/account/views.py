@@ -42,7 +42,7 @@ def register_view(request):
                 User.objects.create_user(username=form.cleaned_data['username'], email=form.cleaned_data['email'],
                                         password=form.cleaned_data['password1'])
                 user = User.objects.get(username=form.cleaned_data['username'])
-                user_info.objects.create(user_id=user)
+
                 return redirect('/account/login')
 
     else:
@@ -51,13 +51,30 @@ def register_view(request):
 
 
 
-def profile_info(requset):
-    
-    '''рендер страницы с информацией об аккаунте'''
+def profile_info(request):
 
-    user = requset.user
-    a = settings.BASE_DIR
-    return render(requset, 'account/profile_info.html', {'user': user, 'a': a})
+    '''страница с информацией профиля'''
+
+    user = request.user
+    return render(request, 'account/profile_info.html', {'user': user})
+
+
+
+
+def profile_info_edit(requset):
+    
+    '''рендер страницы для изменения информации об аккаунте'''
+
+    if requset.method == 'POST':
+        form = ProfileInfoForm(requset.POST, requset.FILES)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.user_id = requset.user
+            user.save()
+            return redirect('/homepage')
+    else:
+        form = ProfileInfoForm()
+    return render(requset, 'account/profile_info_edit.html', {'form': form})
 
 
 

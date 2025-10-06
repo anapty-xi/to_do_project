@@ -38,9 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'account.apps.AccountConfig',
     'homepage.apps.HomepageConfig',
+
     'django_bootstrap5',
+    'imagekit',
 ]
 
 MIDDLEWARE = [
@@ -126,7 +129,7 @@ STATICFILES_DIRS = [
  ]
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'madia')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # Default primary key field type

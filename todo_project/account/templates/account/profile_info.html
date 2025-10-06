@@ -8,16 +8,22 @@
 
 {% block content %}
 
+
 <div class="container-fluid">
     <div class="row">
+
         <div class="col-4">
-            <img src="{% static 'user_placeholder.png' %}">
-            <a>{{ user.username }} </a> 
+            {% if user.user_info.photo == None %}
+                <img src="{% static 'user_placeholder.png' %}">
+            {% else %}
+                <img src="{{ user.user_info.photo }}">
+            {% endif %}
+        </div>
+
+        <div class="col-8">
+            {{ user.username }}
         </div>
     </div>
 </div>
-<div class="container">
-    {{ a }}
-</div> 
 
 {% endblock %}
