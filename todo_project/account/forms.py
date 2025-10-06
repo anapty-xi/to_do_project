@@ -50,6 +50,7 @@ class ProfileInfoForm(forms.Form):
     birthd = forms.DateField(label='дата рождения')
     sex = forms.ChoiceField(choices=[('male','м'), ('female','ж')])
     photo = forms.ImageField()
+    preview = forms.CharField(widget=forms.Textarea)
 
 
 

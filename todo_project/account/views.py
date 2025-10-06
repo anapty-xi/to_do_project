@@ -42,6 +42,7 @@ def register_view(request):
                 User.objects.create_user(username=form.cleaned_data['username'], email=form.cleaned_data['email'],
                                         password=form.cleaned_data['password1'])
                 user = User.objects.get(username=form.cleaned_data['username'])
+                user_info.objects.create(user_id=user)
 
                 return redirect('/account/login')
 
@@ -54,7 +55,7 @@ def register_view(request):
 def profile_info(request):
 
     '''страница с информацией профиля'''
-
+    
     user = request.user
     return render(request, 'account/profile_info.html', {'user': user})
 
@@ -64,21 +65,35 @@ def profile_info(request):
 def profile_info_edit(request):
     
     '''страница для изменения информации об аккаунте'''
-
+    user = request.user
     if request.method == 'POST':
         form = ProfileInfoForm(request.POST, request.FILES)
         if form.is_valid():
-            user = request.user
             cd = form.cleaned_data
-            user.user_info.birthd = cd['birthd']
-            user.user_info.sex = cd['sex']
-            user.user_info.photo = cd['photo']  #фото не сохранилось
-            user.username = cd['username']
-            user.email = cd['email']
-            user.save()
+            
+            User.objects.filter(id=user.id).update(username=cd['username'],
+                                                email=cd['email'])
+            user_info.objects.filter(user_id=user.id).update(photo=cd['photo'],
+                                                  sex=cd['sex'],
+                                                  birthd=cd['birthd'],
+                                                  preview=cd['preview'],
+                                                  )
+                                                  
+            a = user_info.objects.get(user_id=user.id)
+            a.photo = cd['photo']
+            a.save()
             return redirect('/account/profile_info')
+        
     else:
-        form = ProfileInfoForm()
+        form = ProfileInfoForm(initial={
+            'username': user.username,
+            'email': user.email,
+            'birthd': user.user_info.birthd,
+            'sex': user.user_info.sex,
+            'preview': user.user_info.preview,
+            'photo': user.user_info.photo,
+        })
+                                        
     return render(request, 'account/profile_info_edit.html', {'form': form})
 
 

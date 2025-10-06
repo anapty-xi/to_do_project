@@ -37,6 +37,21 @@
 
                     </div>
 
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-text">Почта: {{ user.email }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="card-text">Пол: {{ user.user_info.sex }}</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col gy-3">
+                            <div class="card-text">О себе: {{ user.user_info.preview }}</div>
+                        </div>
+                    </div>
+
                     <div class="row text-center">
                         <div class="col g-5">
                             <a href="{% url 'account:profile_info_edit' %}" class="btn btn-primary">Изменить</a>
@@ -48,5 +63,7 @@
         </div>
     </div>
 </div>
+
+
 
 {% endblock %}
