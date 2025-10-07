@@ -4,4 +4,5 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def homepage(requset):
-    return render(requset, 'homepage/homepage.html')
+    todos = todo.objects.all()
+    return render(requset, 'homepage/homepage.html', {'todos': todos})

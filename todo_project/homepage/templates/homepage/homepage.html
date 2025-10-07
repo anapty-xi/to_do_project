@@ -6,6 +6,15 @@
 
 {% block content %}
 
-j
+<div class="container-fluid text-center">
+    {% for todo in todos %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ todo.name }}</h5>
+                <p class="card-text">{{ todo.description }}</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
 
 {% endblock %}
