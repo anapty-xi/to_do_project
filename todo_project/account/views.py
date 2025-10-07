@@ -5,7 +5,9 @@ from django.contrib.auth.models import User
 from .models import user_info
 from django.core.exceptions import ValidationError
 
-from django.conf import settings
+import sys
+sys.path.append('..')
+from todos.models import todo
 
 
 
@@ -57,7 +59,8 @@ def profile_info(request):
     '''страница с информацией профиля'''
     
     user = request.user
-    return render(request, 'account/profile_info.html', {'user': user})
+    user_todos = todo.objects.filter(user_id=user.id)
+    return render(request, 'account/profile_info.html', {'user': user, 'user_todos': user_todos})
 
 
 

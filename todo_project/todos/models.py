@@ -10,7 +10,7 @@ class todo(models.Model):
     description = models.TextField()
     img = models.ImageField(upload_to='todo_images/', blank=True, null=True)
     publish_date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField()
+    active = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['publish_date',]
