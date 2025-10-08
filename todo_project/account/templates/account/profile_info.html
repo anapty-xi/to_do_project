@@ -71,7 +71,9 @@
                 {% for todo in user_todos %}
                 <li class="list-group-item">
                     <div class="card">
-                        <div class="card-header">{{ todo.name }}</div>
+                        <div class="card-header">
+                            <a href="{{ todo.get_absolute_url }}">{{ todo.name }}</a>
+                        </div>
                         <div class="card-body">{{ todo.description }}</div>
                     </div>
                 </li>

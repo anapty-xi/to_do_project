@@ -21,6 +21,6 @@ class todo(models.Model):
     
 
     def get_absolute_url(self):
-        return reverse('todos', kwargs={'pk': self.pk,
+        return reverse('todos:todo_info', kwargs={'pk': self.pk,
                                      'slug': self.slug,
-                                     'publish_date': self.publish_date})
+                                     })

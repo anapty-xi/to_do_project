@@ -1,26 +1,53 @@
 from django.shortcuts import render,redirect
 from .models import todo
-from .forms import TodoAddForm
+from .forms import TodoAddAndEditForm
+from django.urls import reverse
+from django.utils.text import slugify
+from unidecode import unidecode
 
 
 
-def todo_info(request, pk, slug, publish_date):
+def todo_info(request, pk, slug):
     current_todo = todo.objects.get(pk=pk,
                                     slug=slug,
-                                    publish_date=publish_date)
+                                    )
     return render(request, 'todo_info.html', {'current_todo': current_todo})
 
 
 def todo_add(request):
     user = request.user
     if request.method == 'POST':
-        form = TodoAddForm(request.POST)
+        form = TodoAddAndEditForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
             todo.objects.create(user_id=user,
                                 name=cd['name'],
+                                slug=slugify(unidecode(cd['name'])),
                                 description=cd['description'])
             return redirect('/account/profile_info/')
     else:
-        form = TodoAddForm()
+        form = TodoAddAndEditForm()
     return render(request, 'todo_add.html', {'form': form})
+
+
+def todo_del(request, pk, slug):
+    todo_for_del = todo.objects.get(pk=pk, slug=slug)
+    todo_for_del.delete()
+    return redirect(reverse('account:profile_info'))
+
+
+def todo_edit(request, pk, slug):
+    if request.method == 'POST':
+        form = TodoAddAndEditForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            todo.objects.filter(pk=pk, slug=slug).update(name=cd['name'],
+                                                      description=cd['description'],
+                                                      )
+            return redirect(reverse('todos:todo_info', kwargs={'pk': pk,
+                                                              'slug': slug}))
+    else:
+        todo_to_edit = todo.objects.get(pk=pk, slug=slug)
+        form = TodoAddAndEditForm(initial={'name': todo_to_edit.name,
+                                            'description': todo_to_edit.description})
+    return render(request, 'todo_edit.html', {'form': form})

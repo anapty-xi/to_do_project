@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}Добавить задачу{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-10 offset-md-1 gy-5">
+
+        <div class="card"> 
+            <div class="card-body">
+                <div class="card-title offset-md-1">
+                    <h1>{{ current_todo.name }}</h1>
+                </div>
+                <div class="card-text">{{ current_todo.description }}</div>
+                <a href="{% url 'todos:todo_del' current_todo.pk current_todo.slug %}" class="btn btn-secondary btn-md">удалить</a>
+                <a href="{% url 'todos:todo_edit' current_todo.pk current_todo.slug %}" class="btn btn-primary btn-md">изменить</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+{% endblock %}
