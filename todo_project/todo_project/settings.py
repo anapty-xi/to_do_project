@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'homepage.apps.HomepageConfig',
     'todos.apps.TodosConfig',
+    'friends.apps.FriendsConfig',
 
     'django_bootstrap5',
     'imagekit',

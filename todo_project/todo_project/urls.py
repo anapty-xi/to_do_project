@@ -25,6 +25,7 @@ urlpatterns = [
     path('account/', include('account.urls', namespace='account')),
     path('homepage/', include('homepage.urls', namespace='homepage')),
     path('todos/', include('todos.urls', namespace='todos')),
+    path('friends/', include('friends.urls', namespace='friends')),
 ]
 
 if settings.DEBUG:

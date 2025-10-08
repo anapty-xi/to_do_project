@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+
+{% load static %}
+
+{% block title %}Поиск друзей{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-6 offset-md-3 gy-5">
+        <form method="post">
+            {% csrf_token %}
+
+            {% bootstrap_form form layout='horizontal' %}
+            {% bootstrap_button "поиск" button_type="submit" button_class="btn-primary" %}
+        </form>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+
+        {% for user in user_queryset %}
+        <div class="card" style="width: 18rem; margin: 2rem;">
+            {% if user.user_info.photo %}
+            <img src="{{ user.user_info.photo.url }}" class="card-img-top">
+            {% else %}
+            <img src="{% static 'user_placeholder.png' %}" class="img-fluid">
+            {% endif %}
+            <div class="card-body">
+                <div class="card-text">
+                    <a href="{{ user.get_absolute_url }}" class="btn btn-secondary">{{ user.username }}</a>
+                </div>
+                
+            </div>
+        </div>
+        {% endfor %}   
+
+
+</div>
+
+
+{% endblock %}

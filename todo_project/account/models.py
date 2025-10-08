@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
-from django.conf import settings
+from django.urls import reverse
 
 class user_info(models.Model):
     class SexChoises(models.TextChoices):
@@ -21,4 +21,16 @@ class user_info(models.Model):
     def get_age(self):
         days = (datetime.datetime.now() - self.birthd).days
         return days // 365
+    
+
+
+
+class UserProxy(User):
+
+    class Meta:
+        proxy = True
+
+    def get_absolute_url(self):
+        return reverse('account:another_profile_info', kwargs={'pk': self.pk,
+                                                              'username': self.username})
     
