@@ -103,7 +103,8 @@ def profile_info_edit(request):
 
 def another_profile_info(request, pk, username):
     user = User.objects.get(pk=pk, username=username)
-    return render(request, 'account/another_profile_info.html', {'user': user})
+    user_todos = todo.objects.filter(user_id=user)
+    return render(request, 'account/another_profile_info.html', {'user': user, 'user_todos': user_todos})
 
 
 

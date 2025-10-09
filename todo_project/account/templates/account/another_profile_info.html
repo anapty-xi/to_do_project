@@ -1,11 +1,89 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% load django_bootstrap5 %}
 
 {% block title %}аккаунт{% endblock %}
 
 {% block content %}
 
-{{ user.username }}
+
+<div class="container-fluid">
+    <div class="row ">
+
+        <div class="col-5 g-5 text-center">
+            {% if not user.user_info.photo %}
+                <img src="{% static 'user_placeholder.png' %}" class="rounded img-fluid" style="height: 25rem;">
+            {% else %}
+                <img src="{{ user.user_info.photo.url }}" class="rounded img-fluid" style="height: 25rem;">
+            {% endif %}
+        </div>
+
+        <div class="col-7 g-5"> 
+            <div class="card" style="height: 25rem;">
+                <div class="card-body">
+                    <h5 class="card-tit">Аккаунт {{ user.username }}</h5>
+                    <h6 class="card-subtitle text-body-secondary">{{ user.username }}</h6>
+                    <div class="row">
+
+                        <div class="col gy-4">
+                            <div class="card-text">Пол: {{ user.user_info.sex }}</div> 
+                        </div>
+
+                        <div class="col gy-4">
+                            <div class="card-text">Дата рождения: {{ user.user_info.birthd }}</div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-text">Почта: {{ user.email }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="card-text">Пол: {{ user.user_info.sex }}</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col gy-3">
+                            <div class="card-text">О себе: {{ user.user_info.preview }}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col gy-5">
+                            <a href="{% url 'friends:friend_add' user.pk user.username %}" class="btn btn-primary">добавить в друзья</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid g-4">
+            <div class="card">
+                <div class="card-header">{{ user.usernmae }} todo</div>
+                <ul class="list-group list-group-flush">
+                    {% for todo in user_todos %}
+                    <li class="list-group-item">
+                        <div class="card">
+                            <div class="card-header">
+                                <a>{{ todo.name }}</a>
+                            </div>
+                            <div class="card-body">{{ todo.description }}</div>
+                        </div>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">
+                        <a>У {{ user.username }} нет todo на данный момент</a>
+                    </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>    
+
+    </div>
+</div>
 
 {% endblock %}

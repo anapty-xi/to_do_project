@@ -14,6 +14,7 @@ class user_info(models.Model):
     birthd = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to='user_images/', blank=True, null=True)
     preview = models.TextField(blank=True)
+    friends = models.ManyToManyField(User, related_name='friends')
 
     class Meta:
         ordering = ['birthd']
@@ -33,4 +34,7 @@ class UserProxy(User):
     def get_absolute_url(self):
         return reverse('account:another_profile_info', kwargs={'pk': self.pk,
                                                               'username': self.username})
+    
+
+
     

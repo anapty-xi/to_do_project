@@ -17,6 +17,9 @@
             {% bootstrap_button "поиск" button_type="submit" button_class="btn-primary" %}
         </form>
     </div>
+    {% for friend in user_friends %}
+    {{ friend.username }}
+    {% endfor %} 
 </div>
 <div class="d-flex justify-content-center">
 
