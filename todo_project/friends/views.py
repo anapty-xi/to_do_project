@@ -15,7 +15,7 @@ def friends_search(request):
         form = FriendSearchForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user_queryset = UserProxy.objects.filter(username__startswith=cd['username'])
+            user_queryset = UserProxy.objects.filter(username__startswith=cd['username']).exclude(username=request.user.username)
     else:
         form = FriendSearchForm()
     return render(request, 'friend_search.html', {'form': form, 'user_queryset': user_queryset, 'user_friends': user_friends})

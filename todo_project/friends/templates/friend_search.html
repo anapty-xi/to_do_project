@@ -9,38 +9,66 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-6 offset-md-3 gy-5">
+    
+    <div class="col-4 gy-5" style="margin-left: 5rem;">
+        <h5>Ваши друзья</h5>
+        {% for friend in user_friends %}
+        <div class="card" style="height: 10rem; margin-bottom: 2rem;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {% if friend.user_info.photo %}
+                    <img src="{{ friend.user_info.photo.url }}" class="img-fluid rounded-start" style="height: 10rem;">
+                    {% else %}
+                    <img src="{% static 'user_placeholder.png' %}" class="img-fluid rounded-start" style="height: 10rem;">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="title">
+                            <a href="{{ friend.get_absolute_url }}" class="btn btn-secondary">{{ friend.username }}</a>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <div class="col-6 offset-md-1 gy-5">
         <form method="post">
             {% csrf_token %}
 
             {% bootstrap_form form layout='horizontal' %}
             {% bootstrap_button "поиск" button_type="submit" button_class="btn-primary" %}
         </form>
-    </div>
-    {% for friend in user_friends %}
-    {{ friend.username }}
-    {% endfor %} 
-</div>
-<div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center">
 
-        {% for user in user_queryset %}
-        <div class="card" style="width: 18rem; margin: 2rem;">
-            {% if user.user_info.photo %}
-            <img src="{{ user.user_info.photo.url }}" class="card-img-top">
-            {% else %}
-            <img src="{% static 'user_placeholder.png' %}" class="img-fluid">
-            {% endif %}
-            <div class="card-body">
-                <div class="card-text">
-                    <a href="{{ user.get_absolute_url }}" class="btn btn-secondary">{{ user.username }}</a>
+                {% for user in user_queryset %}
+                <div class="card" style="width: 18rem; margin: 2rem;">
+                    {% if user.user_info.photo %}
+                    <img src="{{ user.user_info.photo.url }}" class="card-img-top">
+                    {% else %}
+                    <img src="{% static 'user_placeholder.png' %}" class="img-fluid">
+                    {% endif %}
+                    <div class="card-body">
+                        <p class="card-text">
+                            <a href="{{ user.get_absolute_url }}" class="btn btn-secondary">{{ user.username }}</a>
+                        </p>
+                        
+                    </div>
                 </div>
-                
-            </div>
-        </div>
-        {% endfor %}   
+                {% endfor %}   
 
+
+        </div>       
+        
+
+    </div>
 
 </div>
+
 
 
 {% endblock %}
