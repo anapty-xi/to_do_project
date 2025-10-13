@@ -17,6 +17,8 @@
                 <div class="card-text">{{ current_todo.description }}</div>
                 <a href="{% url 'todos:todo_del' current_todo.pk current_todo.slug %}" class="btn btn-secondary btn-md">удалить</a>
                 <a href="{% url 'todos:todo_edit' current_todo.pk current_todo.slug %}" class="btn btn-primary btn-md">изменить</a>
+                <a href="{% url 'todos:report_add' current_todo.pk current_todo.slug %}" class="btn btn-primary btn-md">создать отчет</a>
+                <p>{{ current_todo.report.description }}</p>
             </div>
         </div>
 

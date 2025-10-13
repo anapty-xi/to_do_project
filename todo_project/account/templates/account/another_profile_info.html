@@ -53,7 +53,11 @@
                     </div>
                     <div class="row">
                         <div class="col gy-5">
+                            {% if friend_add_flag %}
                             <a href="{% url 'friends:friend_add' user.pk user.username %}" class="btn btn-primary">добавить в друзья</a>
+                            {% else %}
+                            <a href="{% url 'friends:friend_delete' user.pk user.username %}" class="btn btn-danger">удалить из друзей</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

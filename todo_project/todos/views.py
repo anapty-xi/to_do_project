@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
-from .models import todo
-from .forms import TodoAddAndEditForm
+from .models import todo, TodoReport
+from .forms import TodoAddAndEditForm, ReportAddForm
 from django.urls import reverse
 from django.utils.text import slugify
 from unidecode import unidecode
@@ -51,3 +51,18 @@ def todo_edit(request, pk, slug):
         form = TodoAddAndEditForm(initial={'name': todo_to_edit.name,
                                             'description': todo_to_edit.description})
     return render(request, 'todo_edit.html', {'form': form})
+
+
+
+def report_add(request, pk, slug):
+    current_todo = todo.objects.get(pk=pk, slug=slug)
+    if request.method == 'POST':
+        form = ReportAddForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            report = TodoReport(description = cd['description'])
+            current_todo.report.add(report)
+            return redirect(current_todo.get_absolute_url())
+    else:
+        form = ReportAddForm()
+    return render(request, 'report_add.html', {'form': form})

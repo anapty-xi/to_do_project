@@ -24,3 +24,11 @@ class todo(models.Model):
         return reverse('todos:todo_info', kwargs={'pk': self.pk,
                                      'slug': self.slug,
                                      })
+    
+
+
+
+class TodoReport(models.Model):
+    todo = models.OneToOneField(todo, related_name='report', on_delete=models.CASCADE)
+    description = models.TextField()
+    img = models.ImageField(upload_to='todo_images/report', blank=True, null=True)

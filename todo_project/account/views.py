@@ -103,8 +103,11 @@ def profile_info_edit(request):
 
 def another_profile_info(request, pk, username):
     user = User.objects.get(pk=pk, username=username)
+    friend_add_flag = True
+    if user.user_info in request.user.user_info.friends.all():
+        friend_add_flag = False
     user_todos = todo.objects.filter(user_id=user)
-    return render(request, 'account/another_profile_info.html', {'user': user, 'user_todos': user_todos})
+    return render(request, 'account/another_profile_info.html', {'user': user, 'user_todos': user_todos, 'friend_add_flag': friend_add_flag})
 
 
 

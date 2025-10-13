@@ -14,7 +14,7 @@ class user_info(models.Model):
     birthd = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to='user_images/', blank=True, null=True)
     preview = models.TextField(blank=True)
-    friends = models.ManyToManyField(User, related_name='friends')
+    friends = models.ManyToManyField('self', through='friends.Friendship', symmetrical=True)
 
     class Meta:
         ordering = ['birthd']
