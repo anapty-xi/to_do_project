@@ -61,8 +61,25 @@ def report_add(request, pk, slug):
         if form.is_valid():
             cd = form.cleaned_data
             report = TodoReport(description = cd['description'])
-            current_todo.report.add(report)
+            report.todo = current_todo
+            report.save()
             return redirect(current_todo.get_absolute_url())
     else:
         form = ReportAddForm()
+    return render(request, 'report_add.html', {'form': form})
+
+
+
+def report_edit(request, pk, slug):
+    current_todo = todo.objects.get(pk=pk, slug=slug)
+    if request.method == 'POST':
+        form = ReportAddForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            report = TodoReport.objects.get(todo=current_todo)
+            report.description = cd['description']
+            report.save()
+            return redirect(current_todo.get_absolute_url())
+    else:
+        form = ReportAddForm(initial={'description': current_todo.report.description })
     return render(request, 'report_add.html', {'form': form})

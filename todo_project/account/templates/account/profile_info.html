@@ -14,9 +14,9 @@
 
         <div class="col-5 g-5 text-center">
             {% if not user.user_info.photo %}
-                <img src="{% static 'user_placeholder.png' %}" class="img-fluid">
+                <img src="{% static 'user_placeholder.png' %}" class="img-fluid" style="height: 25rem; margin-bottom: 2rem;">
             {% else %}
-                <img src="{{ user.user_info.photo.url }}" class="rounded img-fluid">
+                <img src="{{ user.user_info.photo.url }}" class="rounded img-fluid" style="height: 25rem; margin-bottom: 2rem;">
             {% endif %}
         </div>
 
@@ -55,6 +55,7 @@
                     <div class="row text-center">
                         <div class="col g-5">
                             <a href="{% url 'account:profile_info_edit' %}" class="btn btn-primary">Изменить</a>
+                             <a href="{% url 'account:logout' %}" class="btn btn-primary">выйти</a>
                         </div>
                     </div>
 

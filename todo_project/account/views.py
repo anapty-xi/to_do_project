@@ -4,6 +4,7 @@ from .forms import RegisterForm, LoginForm, ProfileInfoForm
 from django.contrib.auth.models import User
 from .models import user_info
 from django.core.exceptions import ValidationError
+from django.urls import reverse
 
 import sys
 sys.path.append('..')
@@ -30,6 +31,12 @@ def login_view(request):
     else:
         form = LoginForm()
     return render(request, 'authentication/login.html', {'form': form})
+
+
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('account:login'))
 
 
 
