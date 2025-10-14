@@ -71,7 +71,14 @@
               <ul class="list-group list-group-flush">
                 {% for todo in user_todos %}
                 <li class="list-group-item">
-                    <div class="card">
+                    {% if todo.status == 'no_report' %}
+                    <div class="card text-bg-secondary mb-3">
+                    {% elif todo.status == 'no_confirm' %}
+                    <div class="card text-bg-warning">
+                    {% elif todo.status == 'confirmed' %}
+                    <div class="card text-bg-success">
+                    {% endif %}
+
                         <div class="card-header">
                             <a href="{{ todo.get_absolute_url }}">{{ todo.name }}</a>
                         </div>

@@ -8,17 +8,23 @@
 
 <div class="row">
     <div class="col-10 offset-md-1 gy-5">
-
-        <div class="card"> 
+        {% if current_todo.status == 'no_report' %}
+        <div class="card text-bg-secondary mb-3">
+        {% elif current_todo.status == 'no_confirm' %}
+        <div class="card text-bg-warning">
+        {% elif current_todo.status == 'confirmed' %}
+        <div class="card text-bg-success">
+        {% endif %}
             <div class="card-body">
                 <div class="card-title">
                     <h1>{{ current_todo.name }}</h1>
                 </div>
                 <div class="card-text" style="margin-bottom: 2rem;">{{ current_todo.description }}</div>
+            {% if is_user_todo %}
                 <a href="{% url 'todos:todo_del' current_todo.pk current_todo.slug %}" class="btn btn-secondary btn-md" style="margin-bottom: 3rem;">удалить</a>
                 <a href="{% url 'todos:todo_edit' current_todo.pk current_todo.slug %}" class="btn btn-primary btn-md" style="margin-bottom: 3rem;">изменить</a>
 
-                {% if  not current_todo.report %}
+                {% if not current_todo.report %}
                 <a href="{% url 'todos:report_add' current_todo.pk current_todo.slug %}" class="btn btn-primary btn-md"style="margin-bottom: 3rem;" >создать отчет</a>
             </div>
                 {% else %}
@@ -28,6 +34,15 @@
                     <a href="{% url 'todos:report_edit' current_todo.pk current_todo.slug %}" class="btn btn-primary btn-md">изменить отчет</a>
                 </div>
                 {% endif %}
+            {% else %}
+                {% if current_todo.report %}
+                <div class="card-footer">
+                    <h1>Отчет ToDo</h1>
+                    <h5>{{ current_todo.report.description }}</h5>
+                    <a href="{% url 'todos:todo_confirm' current_todo.pk current_todo.slug %}" class="btn btn-primary">подтвердить выполнение</a>
+                </div>
+                {% endif %}
+            {% endif %}
                 
             </div>
         </div>

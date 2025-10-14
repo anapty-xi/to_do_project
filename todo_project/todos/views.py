@@ -11,7 +11,10 @@ def todo_info(request, pk, slug):
     current_todo = todo.objects.get(pk=pk,
                                     slug=slug,
                                     )
-    return render(request, 'todo_info.html', {'current_todo': current_todo})
+    is_user_todo = False
+    if current_todo in request.user.todo.all():
+        is_user_todo = True
+    return render(request, 'todo_info.html', {'current_todo': current_todo, 'is_user_todo': is_user_todo})
 
 
 def todo_add(request):
@@ -60,9 +63,12 @@ def report_add(request, pk, slug):
         form = ReportAddForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
+            current_todo.status = 'no_confirm'
+            current_todo.save()
             report = TodoReport(description = cd['description'])
             report.todo = current_todo
             report.save()
+            
             return redirect(current_todo.get_absolute_url())
     else:
         form = ReportAddForm()
@@ -83,3 +89,10 @@ def report_edit(request, pk, slug):
     else:
         form = ReportAddForm(initial={'description': current_todo.report.description })
     return render(request, 'report_add.html', {'form': form})
+
+
+def todo_confirm(requset, pk, slug):
+    todo_for_confirm  = todo.objects.get(pk=pk, slug=slug)
+    todo_for_confirm.status = 'confirmed'
+    todo_for_confirm.save()
+    return redirect(todo_for_confirm.get_absolute_url())

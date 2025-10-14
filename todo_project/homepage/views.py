@@ -9,10 +9,9 @@ from account.models import user_info
 @login_required
 def homepage(requset):
     user = requset.user
-    user_todos = user.todo.all().filter(active=True)
-
+    user_todos = user.todo.all()
     friends = user.user_info.friends.all()
-    friends_todos_manylvl = map(lambda x: x.user_id.todo.all().filter(active=True), friends)
+    friends_todos_manylvl = map(lambda x: x.user_id.todo.all(), friends)
     friends_todos = []
     for todos in friends_todos_manylvl:
         friends_todos.extend(todos)

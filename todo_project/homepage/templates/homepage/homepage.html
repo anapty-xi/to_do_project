@@ -10,23 +10,43 @@
     <div class="row">
         <div class="col-7">
             {% for todo in friends_todos %}
-                <div class="card">
+                {% if todo.status == 'no_report' %}
+                <div class="card text-bg-secondary mb-3">
+                {% elif todo.status == 'no_confirm' %}
+                <div class="card text-bg-warning">
+                {% elif todo.status == 'confirmed' %}
+                <div class="card text-bg-success">
+                {% endif %}
                     <div class="card-body">
-                        <h5 class="card-title">{{ todo.name }}</h5>
+                        <h5 class="card-title">
+                            <a href="{{ todo.get_absolute_url }}">{{ todo.name }}</a>
+                        </h5>
                         <p class="card-text">{{ todo.description }}</p>
                     </div>
                 </div>
+            {% empty %}
+            <h1>У ваших друзей нет активных ToDo</h1>
             {% endfor %}
         </div>
 
         <div class="col-5">
             {% for todo in user_todos %}
-            <div class="card">
+            {% if todo.status == 'no_report' %}
+            <div class="card text-bg-secondary mb-3">
+            {% elif todo.status == 'no_confirm' %}
+            <div class="card text-bg-warning">
+            {% elif todo.status == 'confirmed' %}
+            <div class="card text-bg-success">
+            {% endif %}
                 <div class="card-body">
-                        <h5 class="card-title">{{ todo.name }}</h5>
+                        <h5 class="card-title">
+                            <a href="{{ todo.get_absolute_url }}">{{ todo.name }}</a>
+                        </h5>
                         <p class="card-text">{{ todo.description }}</p>
                 </div>
             </div>
+            {% empty %}
+            <h1>У вас нет активных ToDo</h1>
             {% endfor %}
         </div>
     </div>
