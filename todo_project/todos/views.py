@@ -23,10 +23,11 @@ def todo_add(request):
 
     user = request.user
     if request.method == 'POST':
-        form = services.form_post(request, TodoAddAndEditForm)
-        cd = form.cleaned_data
-        services.todo_add(cd, user)
-        return redirect(reverse('account:profile_info'))
+        form = TodoAddAndEditForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            services.todo_add(cd, user)
+            return redirect(reverse('account:profile_info'))
     else:
         form = TodoAddAndEditForm()
     return render(request, 'todo_add.html', {'form': form})
@@ -48,12 +49,13 @@ def todo_edit(request, pk, slug):
 
     todo_to_edit = services.get_todo_by_pk_slug(pk, slug)
     if request.method == 'POST':
-        form = services.form_post(request, TodoAddAndEditForm)
-        cd = form.cleaned_data
-        services.todo_update(pk, slug, cd)
+        form = TodoAddAndEditForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            services.todo_update(pk, slug, cd)
 
-        return redirect(reverse('todos:todo_info', kwargs={'pk': pk,
-                                                            'slug': slug}))
+            return redirect(reverse('todos:todo_info', kwargs={'pk': pk,
+                                                                'slug': slug}))
     else:
         form = TodoAddAndEditForm(initial={'name': todo_to_edit.name,
                                             'description': todo_to_edit.description})
@@ -67,11 +69,12 @@ def report_add(request, pk, slug):
 
     current_todo = services.get_todo_by_pk_slug(pk, slug)
     if request.method == 'POST':
-        form = services.form_post(request, ReportAddForm)
-        cd = form.cleaned_data
-        services.report_add(pk, slug, cd)
-        
-        return redirect(current_todo.get_absolute_url())
+        form = ReportAddForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            services.report_add(pk, slug, cd)
+            
+            return redirect(current_todo.get_absolute_url())
     else:
         form = ReportAddForm()
     return render(request, 'report_add.html', {'form': form})
@@ -84,10 +87,11 @@ def report_edit(request, pk, slug):
 
     current_todo = services.get_todo_by_pk_slug(pk, slug)
     if request.method == 'POST':
-        form = services.form_post(request, ReportAddForm)
-        cd = form.cleaned_data
-        services.report_edit(pk, slug, cd)
-        return redirect(current_todo.get_absolute_url())
+        form = ReportAddForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            services.report_edit(pk, slug, cd)
+            return redirect(current_todo.get_absolute_url())
     else:
         form = ReportAddForm(initial={'description': current_todo.report.description })
     return render(request, 'report_add.html', {'form': form})

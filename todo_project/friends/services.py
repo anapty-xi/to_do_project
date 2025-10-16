@@ -5,8 +5,6 @@ from django.contrib.auth.models import User
 
 
 
-def form_post(request, form):
-    return todos.services.form_post(request, form)
 
 
 

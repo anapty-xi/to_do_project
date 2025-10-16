@@ -10,9 +10,10 @@ def friends_search(request):
     search_queryset = []
     user_friends = services.user_friends_with_gau(request)
     if request.method == 'POST':
-        form = services.form_post(request, FriendSearchForm)
-        cd = form.cleaned_data
-        search_queryset = services.search_queryset(request, cd)
+        form = FriendSearchForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            search_queryset = services.search_queryset(request, cd)
     else:
         form = FriendSearchForm()
     return render(request, 'friend_search.html', {'form': form, 'user_queryset': search_queryset, 'user_friends': user_friends})

@@ -15,11 +15,6 @@ def your_todo_has_confirmed_mail(user_email, username, todo_name):
     )
     email.send(fail_silently=False)
 
-
-def form_post(requset, requset_form):
-    form = requset_form(requset.POST)
-    if form.is_valid():
-        return form
         
 
 
