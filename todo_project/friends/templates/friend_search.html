@@ -16,8 +16,8 @@
         <div class="card" style="height: 10rem; margin-bottom: 2rem;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    {% if friend.user_info.photo %}
-                    <img src="{{ friend.user_info.photo.url }}" class="img-fluid rounded-start" style="height: 10rem;">
+                    {% if friend.profile.photo %}
+                    <img src="{{ friend.profile.photo.url }}" class="img-fluid rounded-start" style="height: 10rem;">
                     {% else %}
                     <img src="{% static 'user_placeholder.png' %}" class="img-fluid rounded-start" style="height: 10rem;">
                     {% endif %}
@@ -47,8 +47,8 @@
 
                 {% for user in user_queryset %}
                 <div class="card" style="width: 18rem; margin: 2rem;">
-                    {% if user.user_info.photo %}
-                    <img src="{{ user.user_info.photo.url }}" class="card-img-top">
+                    {% if user.profile.photo %}
+                    <img src="{{ user.profile.photo.url }}" class="card-img-top">
                     {% else %}
                     <img src="{% static 'user_placeholder.png' %}" class="img-fluid">
                     {% endif %}

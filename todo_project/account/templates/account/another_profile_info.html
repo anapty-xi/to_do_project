@@ -13,10 +13,10 @@
     <div class="row ">
 
         <div class="col-5 g-5 text-center">
-            {% if not user.user_info.photo %}
+            {% if not user.profile.photo %}
                 <img src="{% static 'user_placeholder.png' %}" class="rounded img-fluid" style="height: 25rem;">
             {% else %}
-                <img src="{{ user.user_info.photo.url }}" class="rounded img-fluid" style="height: 25rem;">
+                <img src="{{ user.profile.photo.url }}" class="rounded img-fluid" style="height: 25rem;">
             {% endif %}
         </div>
 
@@ -28,11 +28,11 @@
                     <div class="row">
 
                         <div class="col gy-4">
-                            <div class="card-text">Пол: {{ user.user_info.sex }}</div> 
+                            <div class="card-text">Пол: {{ user.profile.sex }}</div> 
                         </div>
 
                         <div class="col gy-4">
-                            <div class="card-text">Дата рождения: {{ user.user_info.birthd }}</div>
+                            <div class="card-text">Дата рождения: {{ user.profile.birthd }}</div>
                         </div>
 
                     </div>
@@ -42,13 +42,13 @@
                             <div class="card-text">Почта: {{ user.email }}</div>
                         </div>
                         <div class="col">
-                            <div class="card-text">Пол: {{ user.user_info.sex }}</div>
+                            <div class="card-text">Пол: {{ user.profile.sex }}</div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col gy-3">
-                            <div class="card-text">О себе: {{ user.user_info.preview }}</div>
+                            <div class="card-text">О себе: {{ user.profile.preview }}</div>
                         </div>
                     </div>
                     <div class="row">

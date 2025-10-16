@@ -3,13 +3,13 @@ from django.contrib.auth.models import User
 import datetime
 from django.urls import reverse
 
-class user_info(models.Model):
+class Profile(models.Model):
     class SexChoises(models.TextChoices):
-        male = 'М', ('male')
-        female = 'Ж', ('female')
-        default = '-', ('default')   
+        male = 'М'
+        female = 'Ж'
+        default = '-'  
 
-    user_id = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
     sex = models.CharField(max_length=1, choices=SexChoises, default=SexChoises.default)
     birthd = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to='user_images/', blank=True, null=True)

@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import user_info
+from .models import Profile
 
-@admin.register(user_info)
+@admin.register(Profile)
 class UserInfoAdmin(admin.ModelAdmin):
     list_display = ['user_id', 'sex', 'photo', 'birthd', 'preview']

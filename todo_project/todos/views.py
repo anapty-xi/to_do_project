@@ -1,56 +1,60 @@
 from django.shortcuts import render,redirect
-from .models import todo, TodoReport
 from .forms import TodoAddAndEditForm, ReportAddForm
 from django.urls import reverse
-from django.utils.text import slugify
-from unidecode import unidecode
+from . import services
 
 
 
 def todo_info(request, pk, slug):
-    current_todo = todo.objects.get(pk=pk,
-                                    slug=slug,
-                                    )
+
+    '''подробная иформация о ToDo'''
+
+    current_todo = services.get_todo_by_pk_slug(pk, slug)
     is_user_todo = False
     if current_todo in request.user.todo.all():
         is_user_todo = True
     return render(request, 'todo_info.html', {'current_todo': current_todo, 'is_user_todo': is_user_todo})
 
 
+
 def todo_add(request):
+
+    '''создание ToDo'''
+
     user = request.user
     if request.method == 'POST':
-        form = TodoAddAndEditForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            todo.objects.create(user_id=user,
-                                name=cd['name'],
-                                slug=slugify(unidecode(cd['name'])),
-                                description=cd['description'])
-            return redirect('/account/profile_info/')
+        form = services.form_post(request, TodoAddAndEditForm)
+        cd = form.cleaned_data
+        services.todo_add(cd, user)
+        return redirect(reverse('account:profile_info'))
     else:
         form = TodoAddAndEditForm()
     return render(request, 'todo_add.html', {'form': form})
 
 
+
 def todo_del(request, pk, slug):
-    todo_for_del = todo.objects.get(pk=pk, slug=slug)
-    todo_for_del.delete()
+
+    '''удаление ToDo'''
+
+    services.todo_del(pk, slug)
     return redirect(reverse('account:profile_info'))
 
 
+
 def todo_edit(request, pk, slug):
+
+    '''изсенение ToDo'''
+
+    todo_to_edit = services.get_todo_by_pk_slug(pk, slug)
     if request.method == 'POST':
-        form = TodoAddAndEditForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            todo.objects.filter(pk=pk, slug=slug).update(name=cd['name'],
-                                                      description=cd['description'],
-                                                      )
-            return redirect(reverse('todos:todo_info', kwargs={'pk': pk,
-                                                              'slug': slug}))
+        form = services.form_post(request, TodoAddAndEditForm)
+        cd = form.cleaned_data
+        services.todo_update(pk, slug, cd)
+
+        return redirect(reverse('todos:todo_info', kwargs={'pk': pk,
+                                                            'slug': slug}))
     else:
-        todo_to_edit = todo.objects.get(pk=pk, slug=slug)
         form = TodoAddAndEditForm(initial={'name': todo_to_edit.name,
                                             'description': todo_to_edit.description})
     return render(request, 'todo_edit.html', {'form': form})
@@ -58,18 +62,16 @@ def todo_edit(request, pk, slug):
 
 
 def report_add(request, pk, slug):
-    current_todo = todo.objects.get(pk=pk, slug=slug)
+
+    '''создание отчета'''
+
+    current_todo = services.get_todo_by_pk_slug(pk, slug)
     if request.method == 'POST':
-        form = ReportAddForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            current_todo.status = 'no_confirm'
-            current_todo.save()
-            report = TodoReport(description = cd['description'])
-            report.todo = current_todo
-            report.save()
-            
-            return redirect(current_todo.get_absolute_url())
+        form = services.form_post(request, ReportAddForm)
+        cd = form.cleaned_data
+        services.report_add(pk, slug, cd)
+        
+        return redirect(current_todo.get_absolute_url())
     else:
         form = ReportAddForm()
     return render(request, 'report_add.html', {'form': form})
@@ -77,22 +79,27 @@ def report_add(request, pk, slug):
 
 
 def report_edit(request, pk, slug):
-    current_todo = todo.objects.get(pk=pk, slug=slug)
+
+    '''изменение отчета'''
+
+    current_todo = services.get_todo_by_pk_slug(pk, slug)
     if request.method == 'POST':
-        form = ReportAddForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            report = TodoReport.objects.get(todo=current_todo)
-            report.description = cd['description']
-            report.save()
-            return redirect(current_todo.get_absolute_url())
+        form = services.form_post(request, ReportAddForm)
+        cd = form.cleaned_data
+        services.report_edit(pk, slug, cd)
+        return redirect(current_todo.get_absolute_url())
     else:
         form = ReportAddForm(initial={'description': current_todo.report.description })
     return render(request, 'report_add.html', {'form': form})
 
 
+
 def todo_confirm(requset, pk, slug):
-    todo_for_confirm  = todo.objects.get(pk=pk, slug=slug)
-    todo_for_confirm.status = 'confirmed'
-    todo_for_confirm.save()
-    return redirect(todo_for_confirm.get_absolute_url())
+
+    '''подтверждение ToDo и отправка письма о подтверждении'''
+
+    todo = services.todo_confirm(pk, slug)
+    services.your_todo_has_confirmed_mail(todo.user.email,
+                                          todo.user.username,
+                                          todo.name)
+    return redirect(todo.get_absolute_url())
