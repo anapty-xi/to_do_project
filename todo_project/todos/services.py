@@ -43,9 +43,9 @@ def todo_update(pk, slug, cd):
     todo.description = cd['description']
     todo.save()
 
-def todo_confirm(pk, slug):
+def todo_change_status(pk, slug, status):
      todo = get_todo_by_pk_slug(pk, slug)
-     todo.status = 'confirmed'
+     todo.status = status
      todo.save()
      return todo
 
@@ -55,15 +55,13 @@ def todo_confirm(pk, slug):
 
 
 
-'''операции с репортами ToDo'''
+'''операции с TodoReport'''
 def report_add(pk, slug, cd):
     todo = get_todo_by_pk_slug(pk, slug)
-    todo.status = 'no_confirm'
-    todo.save()
-
     report = TodoReport(description = cd['description'])
     report.todo = todo
     report.save()
+    
 
 
 def report_edit(pk, slug, cd):

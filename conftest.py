@@ -32,10 +32,10 @@ def user_factory(db):
     
     return create_user
 
-
 @pytest.fixture
 def user_mikelee(db, user_factory):
     return user_factory('mikelee')
+
 
 
 
@@ -67,3 +67,25 @@ def todo_factory(db):
 @pytest.fixture
 def todo_test(db, todo_factory, user_mikelee):
     return todo_factory(user=user_mikelee, name='test-todo')
+
+
+
+
+@pytest.fixture
+def report_factory(db):
+    def report_create(
+            todo: Todo,
+            description: str = 'some text',
+            img: Image = None
+    ):
+        report = TodoReport.objects.create(
+            todo=todo,
+            description=description,
+            img=img
+        )
+        return report
+    return report_create
+
+@pytest.fixture
+def report_test(db, todo_test, report_factory):
+    return report_factory(todo=todo_test)

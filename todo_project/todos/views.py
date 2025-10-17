@@ -73,6 +73,7 @@ def report_add(request, pk, slug):
         if form.is_valid():
             cd = form.cleaned_data
             services.report_add(pk, slug, cd)
+            services.todo_change_status(pk, slug, status='no_confirm')
             
             return redirect(current_todo.get_absolute_url())
     else:
@@ -102,7 +103,7 @@ def todo_confirm(requset, pk, slug):
 
     '''подтверждение ToDo и отправка письма о подтверждении'''
 
-    todo = services.todo_confirm(pk, slug)
+    todo = services.todo_change_status(pk, slug, status='confirmed')
     services.your_todo_has_confirmed_mail(todo.user.email,
                                           todo.user.username,
                                           todo.name)
