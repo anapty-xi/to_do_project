@@ -19,7 +19,7 @@ def your_todo_has_confirmed_mail(user_email, username, todo_name):
 
 
 
-'''операции с ToDo'''
+'''операции с ToDo (tested)'''
 
 def get_todo_by_pk_slug(pk, slug):
     return Todo.objects.get(pk=pk, slug=slug)
