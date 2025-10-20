@@ -5,6 +5,7 @@ import datetime
 from todos.models import Todo, TodoReport
 from unidecode import unidecode
 from django.utils.text import slugify
+from account.models import Profile
 
 @pytest.fixture
 def user_factory(db):
@@ -33,8 +34,10 @@ def user_factory(db):
     return create_user
 
 @pytest.fixture
-def user_mikelee(db, user_factory):
+def user_test(db, user_factory):
     return user_factory('mikelee')
+
+
 
 
 
@@ -65,8 +68,8 @@ def todo_factory(db):
     return create_todo
 
 @pytest.fixture
-def todo_test(db, todo_factory, user_mikelee):
-    return todo_factory(user=user_mikelee, name='test-todo')
+def todo_test(db, todo_factory, user_test):
+    return todo_factory(user=user_test, name='test-todo')
 
 
 
@@ -89,3 +92,16 @@ def report_factory(db):
 @pytest.fixture
 def report_test(db, todo_test, report_factory):
     return report_factory(todo=todo_test)
+
+
+
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers", "ServircesTodoTests"
+    )
+    config.addinivalue_line(
+    "markers", "ServircesTodoReportTests"
+    )
+    config.addinivalue_line(
+    "markers", "TodosResponseTests"
+    )
