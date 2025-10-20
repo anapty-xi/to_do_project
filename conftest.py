@@ -6,6 +6,7 @@ from todos.models import Todo, TodoReport
 from unidecode import unidecode
 from django.utils.text import slugify
 from account.models import Profile
+from friends.models import Friendship
 
 @pytest.fixture
 def user_factory(db):
@@ -37,6 +38,9 @@ def user_factory(db):
 def user_test(db, user_factory):
     return user_factory('mikelee')
 
+@pytest.fixture
+def friend_test(db, user_factory, user_test):
+    return user_factory('friend')
 
 
 
@@ -71,6 +75,10 @@ def todo_factory(db):
 def todo_test(db, todo_factory, user_test):
     return todo_factory(user=user_test, name='test-todo')
 
+@pytest.fixture
+def todo_friend_test(db, todo_factory, friend_test):
+    return todo_factory(user=friend_test, name='friend-todo')
+
 
 
 
@@ -95,6 +103,35 @@ def report_test(db, todo_test, report_factory):
 
 
 
+
+@pytest.fixture
+def profile_factory(db):
+    def profile_create(
+            user: User,
+            sex: str = '-',
+            birthd: datetime.date = datetime.date.today(),
+            photo: Image = None,
+            preview: str = 'text',
+    ):
+        profile = Profile.objects.create(
+            user=user,
+            sex=sex,
+            birthd=birthd,
+            photo=photo,
+            preview=preview,
+        )
+        return profile
+    return profile_create
+
+@pytest.fixture
+def profile_test_user(db, profile_factory, user_test):
+    return profile_factory(user=user_test)
+
+@pytest.fixture
+def profile_test_friend(db, profile_factory, friend_test):
+    return profile_factory(user=friend_test)
+        
+
 def pytest_configure(config):
     config.addinivalue_line(
         "markers", "ServircesTodoTests"
@@ -104,4 +141,10 @@ def pytest_configure(config):
     )
     config.addinivalue_line(
     "markers", "TodosResponseTests"
+    )
+    config.addinivalue_line(
+    "markers", "HomepageServiceTests"
+    )
+    config.addinivalue_line(
+    "markers", "HomepageResponseTests"
     )
