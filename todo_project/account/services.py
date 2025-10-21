@@ -11,10 +11,10 @@ def get_user_by_pk_username(pk, username):
 
 '''логика работы с аккаунтом'''
 
-def user_auth(request, cd):
+def user_auth(cd):
     username = cd['username']
     password = cd['password']
-    return authenticate(request, username=username, password=password)
+    return authenticate(username=username, password=password)
 
 
 def user_logout(request):
@@ -52,8 +52,9 @@ def user_profile_update_profile_model(request, cd):
                                                 preview=cd['preview'],
                                                 )
     user_profile = Profile.objects.get(user=request.user)
-    user_profile.photo = cd['photo']
-    user_profile.save()
+    if cd['photo']:
+        user_profile.photo = cd['photo']
+        user_profile.save()
 
 
     

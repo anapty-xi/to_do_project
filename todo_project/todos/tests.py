@@ -85,7 +85,7 @@ def test_homepage(client, django_user_model):
         response.context['is_user_todo'] == True
     
 @pytest.mark.TodosResponseTests
-def test_todo_add(client, django_user_model):
+def test_todo_add_response(client, django_user_model):
     username = 'test'
     password = '1111'
     user = django_user_model.objects.create_user(username=username, password=password)
@@ -95,14 +95,14 @@ def test_todo_add(client, django_user_model):
     assert response.status_code == 302
 
 @pytest.mark.TodosResponseTests
-def test_todo_del(client, todo_test, user_test):
+def test_todo_del_response(client, todo_test, user_test):
     client.force_login(user_test)
     response = client.get(reverse('todos:todo_del', 
                           kwargs={'pk': todo_test.pk, 'slug': todo_test.slug}))
     assert Todo.objects.count() == 0 and response.status_code == 302
 
 @pytest.mark.TodosResponseTests
-def test_todo_edit(client, todo_test, user_test):
+def test_todo_edit_response(client, todo_test, user_test):
     client.force_login(user_test)
     response = client.post(reverse('todos:todo_edit', 
                                    kwargs={'pk': todo_test.pk, 'slug': todo_test.slug}),
@@ -110,7 +110,7 @@ def test_todo_edit(client, todo_test, user_test):
     assert response.status_code == 302
 
 @pytest.mark.TodosResponseTests
-def test_report_add(client, todo_test, user_test):
+def test_report_add_response(client, todo_test, user_test):
     client.force_login(user_test)
     response = client.post(reverse('todos:report_add', 
                                    kwargs={'pk': todo_test.pk, 'slug': todo_test.slug}),
@@ -118,7 +118,7 @@ def test_report_add(client, todo_test, user_test):
     assert response.status_code == 302
 
 @pytest.mark.TodosResponseTests
-def test_report_edit(client, user_test, todo_test, report_test):
+def test_report_edit_response(client, user_test, todo_test, report_test):
     client.force_login(user_test)
     report = report_test
     response_get = client.get(reverse('todos:report_edit', kwargs={'pk': todo_test.pk, 'slug': todo_test.slug}))
@@ -128,7 +128,7 @@ def test_report_edit(client, user_test, todo_test, report_test):
     assert response_post.status_code == 302 and response_get.status_code == 200
 
 @pytest.mark.TodosResponseTests
-def test_todo_confirm(client, todo_test, user_test):
+def test_todo_confirm_response(client, todo_test, user_test):
     client.force_login(user_test)
     response = response = client.post(reverse('todos:todo_confirm', 
                                    kwargs={'pk': todo_test.pk, 'slug': todo_test.slug}))

@@ -20,7 +20,7 @@ def user_factory(db):
             is_superuser: bool = False,
             is_active: bool = True
     ):
-        user = User.objects.create(
+        user = User.objects.create_user(
             username=username,
             password=password,
             first_name=first_name,

@@ -37,14 +37,14 @@ def test_friend_delete(profile_test_user, profile_test_friend):
 
 
 @pytest.mark.FriendsResponseTests
-def test_friends_search(client, profile_test_user, profile_test_friend):
+def test_friends_search_response(client, profile_test_user, profile_test_friend):
     client.force_login(profile_test_user.user)
     Friendship.objects.create(friend_1=profile_test_user, friend_2=profile_test_friend)
     response = client.post(reverse('friends:friends_search'), {'username': 'friend'})
     assert response.status_code == 200
 
 @pytest.mark.FriendsResponseTests
-def test_friend_add(client, profile_test_user, profile_test_friend):
+def test_friend_add_response(client, profile_test_user, profile_test_friend):
     client.force_login(profile_test_user.user)
     Friendship.objects.create(friend_1=profile_test_user, friend_2=profile_test_friend)
     response = client.get(reverse('friends:friend_add', 
@@ -53,7 +53,7 @@ def test_friend_add(client, profile_test_user, profile_test_friend):
     assert response.status_code == 302
 
 @pytest.mark.FriendsResponseTests
-def test_friend_delete(client, profile_test_user, profile_test_friend):
+def test_friend_delete_response(client, profile_test_user, profile_test_friend):
     client.force_login(profile_test_user.user)
     Friendship.objects.create(friend_1=profile_test_user, friend_2=profile_test_friend)
     response = client.get(reverse('friends:friend_delete', 

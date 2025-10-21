@@ -48,7 +48,7 @@ class ProfileInfoForm(forms.Form):
     email = forms.EmailField(label='почта')
     birthd = forms.DateField(label='дата рождения')
     sex = forms.ChoiceField(choices=[('male','м'), ('female','ж')])
-    photo = forms.ImageField()
+    photo = forms.ImageField(required=False)
     preview = forms.CharField(widget=forms.Textarea)
 
 

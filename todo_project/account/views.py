@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from .forms import RegisterForm, LoginForm, ProfileInfoForm
 from django.core.exceptions import ValidationError
 from django.urls import reverse
@@ -16,7 +16,7 @@ def login_view(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = services.user_auth(request, cd)
+            user = services.user_auth(cd)
             if user:
                 services.user_login(request, user)
                 return redirect('/homepage')
@@ -67,6 +67,7 @@ def profile_info_edit(request):
             services.user_profile_update_user_model(request, cd)
             services.user_profile_update_profile_model(request, cd)
             return redirect('/account/profile_info')
+
         
     else:
         form = ProfileInfoForm(initial={
