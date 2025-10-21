@@ -148,3 +148,15 @@ def pytest_configure(config):
     config.addinivalue_line(
     "markers", "HomepageResponseTests"
     )
+    config.addinivalue_line(
+    "markers", "FriendsServicesTests"
+    )
+    config.addinivalue_line(
+    "markers", "FriendsResponseTests"
+    )
+    config.addinivalue_line(
+    "markers", "AccountServicesTests"
+    )
+    config.addinivalue_line(
+    "markers", "AccountResponseTests"
+    )

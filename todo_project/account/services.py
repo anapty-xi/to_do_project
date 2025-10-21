@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from .models import Profile
-import todos
 from todos.models import Todo
 from django.contrib.auth import authenticate, login, logout
 
