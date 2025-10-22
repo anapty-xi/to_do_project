@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from .models import Profile
 from todos.models import Todo
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core.mail import EmailMessage
 
 
 
@@ -28,6 +30,18 @@ def user_register(cd):
     User.objects.create_user(username=cd['username'], email=cd['email'],
                             password=cd['password1'])
     Profile.objects.create(user=User.objects.get(username=cd['username']))
+
+def reset_password_email(user: User, token: PasswordResetTokenGenerator):
+    subject = f'Изменита пораль аккаунта {user.username}'
+    link = f'http://127.0.0.1:8000/account/reset/{token}/'
+    body = f'Пожалуйста, воспользуйтесь ссылкой для изменения пароля {link}'
+    email = EmailMessage(
+        subject,
+        body,
+        to=[user.email],
+    )
+    email.send(fail_silently=False)
+
 
 
 

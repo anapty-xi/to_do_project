@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
-from .forms import RegisterForm, LoginForm, ProfileInfoForm
+from django.shortcuts import render, redirect, HttpResponse
+from .forms import RegisterForm, LoginForm, ProfileInfoForm, ResetPasswordForm
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from . import services
+from django.contrib.auth.models import User
 import sys
 sys.path.append('..')
 
@@ -95,10 +96,35 @@ def another_profile_info(request, pk, username):
     return render(request, 'account/another_profile_info.html', {'user': user, 'user_todos': user_todos, 'friend_add_flag': friend_add_flag})
 
 
-
-def reset_password(requeset):
+@login_required
+def reset_password_email(request):
     token = PasswordResetTokenGenerator()
-    token = token.make_token(requeset.user)
+    token = token.make_token(request.user)
+    services.reset_password_email(request.user, token)
+    return render(request, 'account/reset_email_sent.html')
+
+
+def reset_password_proccess(request, token):
+    if request.method == 'POST':
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = request.user
+            user.set_password(cd['password1'])
+            user.save()
+            flag = 'success'
+    else:
+        try:
+            checker = PasswordResetTokenGenerator()
+            if checker.check_token(user=request.user, token=token):
+                flag = 'get'
+            else:
+                flag = 'token-fail'
+            
+        except:
+            flag = 'anon'
+        form = ResetPasswordForm()
+    return render(request, 'account/reset_password.html', {'form': form, 'flag': flag})
     
 
 
