@@ -5,8 +5,6 @@ from .models import Profile
 from friends.models import Friendship
 import datetime
 from django.urls import reverse
-from PIL import Image
-from .forms import ProfileInfoForm
 from io import BytesIO
 
 class fake_request:
@@ -88,18 +86,15 @@ def test_profile_info(client, profile_test_user):
 @pytest.mark.AccountResponseTests
 def test_profile_info_edit(client, profile_test_user):
     with open(r'C:\pch_projects\to_do_project\todo_project\static\user_placeholder.png', 'rb') as photo:
-        photo = BytesIO(
-            b"GIF89a\x01\x00\x01\x00\x00\x00\x00!\xf9\x04\x01\x00\x00\x00"
-            b"\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x01\x00\x00"
-        )
-        photo.name = 'user_placeholder.png'
-        data = {'username': 'us', 'email': 'email@test.ru', 'sex': '-', 
+        photo_bites = photo.read()
+        photo_io = BytesIO(photo_bites)
+        photo_io.name = 'user_placeholder.png'
+        data = {'username': 'us', 'email': 'email@test.ru', 'sex': 'male', 
                 'birthd': datetime.datetime.now().date(), 'preview': 'test', 
-                'photo': photo}
-        form = ProfileInfoForm(data)
+                'photo': photo_io}
         client.force_login(profile_test_user.user)
         response = client.post(reverse('account:profile_info_edit'), data)
-        assert form.is_valid()
+        assert response.status_code == 302
 
 
 @pytest.mark.AccountResponseTests

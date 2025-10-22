@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 from .forms import RegisterForm, LoginForm, ProfileInfoForm
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from . import services
 import sys
 sys.path.append('..')
@@ -27,7 +29,7 @@ def login_view(request):
     return render(request, 'authentication/login.html', {'form': form})
 
 
-
+@login_required
 def logout_view(request):
     services.user_logout(request)
     return redirect(reverse('account:login'))
@@ -47,7 +49,7 @@ def register_view(request):
     return render(request, 'authentication/register.html', {'form': form})
 
 
-
+@login_required
 def profile_info(request):
     '''страница с информацией профиля'''
     user = request.user
@@ -56,7 +58,7 @@ def profile_info(request):
 
 
 
-
+@login_required
 def profile_info_edit(request):
     '''страница для изменения информации об аккаунте'''
     user = request.user
@@ -82,7 +84,7 @@ def profile_info_edit(request):
     return render(request, 'account/profile_info_edit.html', {'form': form})
 
 
-
+@login_required
 def another_profile_info(request, pk, username):
     '''профиль другого пользователя, его ToDo, и проверка является ли он другом текущего пользователя'''   
     user = services.get_user_by_pk_username(pk, username)
@@ -91,6 +93,15 @@ def another_profile_info(request, pk, username):
         friend_add_flag = False
     user_todos = services.get_user_todos(user)
     return render(request, 'account/another_profile_info.html', {'user': user, 'user_todos': user_todos, 'friend_add_flag': friend_add_flag})
+
+
+
+def reset_password(requeset):
+    token = PasswordResetTokenGenerator()
+    token = token.make_token(requeset.user)
+    
+
+
 
 
 

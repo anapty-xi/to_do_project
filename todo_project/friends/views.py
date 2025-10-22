@@ -2,9 +2,11 @@ from django.shortcuts import render,redirect
 from .forms import FriendSearchForm
 from django.urls import reverse
 from . import services
+from django.contrib.auth.decorators import login_required
 
 
 
+@login_required
 def friends_search(request):
     '''страница для поиска новых и отображения имеющихся друзей'''
     search_queryset = []
@@ -19,13 +21,13 @@ def friends_search(request):
     return render(request, 'friend_search.html', {'form': form, 'user_queryset': search_queryset, 'user_friends': user_friends})
 
 
-
+@login_required
 def friend_add(request, pk, username):
     services.friend_add(request, pk, username)
     return redirect(reverse('friends:friends_search'))
 
 
-
+@login_required
 def friend_delete(request, pk, username):
     services.friend_delete(request, pk, username)
     return redirect(reverse('friends:friends_search'))

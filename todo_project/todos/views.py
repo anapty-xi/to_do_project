@@ -2,9 +2,11 @@ from django.shortcuts import render,redirect
 from .forms import TodoAddAndEditForm, ReportAddForm
 from django.urls import reverse
 from . import services
+from django.contrib.auth.decorators import login_required
 
 
 
+@login_required
 def todo_info(request, pk, slug):
 
     '''подробная иформация о ToDo'''
@@ -16,7 +18,7 @@ def todo_info(request, pk, slug):
     return render(request, 'todo_info.html', {'current_todo': current_todo, 'is_user_todo': is_user_todo})
 
 
-
+@login_required
 def todo_add(request):
 
     '''создание ToDo'''
@@ -33,7 +35,7 @@ def todo_add(request):
     return render(request, 'todo_add.html', {'form': form})
 
 
-
+@login_required
 def todo_del(request, pk, slug):
 
     '''удаление ToDo'''
@@ -42,7 +44,7 @@ def todo_del(request, pk, slug):
     return redirect(reverse('account:profile_info'))
 
 
-
+@login_required
 def todo_edit(request, pk, slug):
 
     '''изсенение ToDo'''
@@ -62,7 +64,7 @@ def todo_edit(request, pk, slug):
     return render(request, 'todo_edit.html', {'form': form})
 
 
-
+@login_required
 def report_add(request, pk, slug):
 
     '''создание отчета'''
@@ -81,7 +83,7 @@ def report_add(request, pk, slug):
     return render(request, 'report_add.html', {'form': form})
 
 
-
+@login_required
 def report_edit(request, pk, slug):
 
     '''изменение отчета'''
@@ -98,7 +100,7 @@ def report_edit(request, pk, slug):
     return render(request, 'report_add.html', {'form': form})
 
 
-
+@login_required
 def todo_confirm(requset, pk, slug):
 
     '''подтверждение ToDo и отправка письма о подтверждении'''
