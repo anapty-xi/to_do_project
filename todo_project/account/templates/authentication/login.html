@@ -26,6 +26,7 @@
         {% bootstrap_form_errors form layout='inline' %}
 
         {% bootstrap_button "войти" button_type="submit" size='lg' %}
+        <a href="{% url 'account:forgot_password' %}" class="btn btn-primary">забыл пароль</a>
 
     </form>
 </div>

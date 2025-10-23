@@ -55,6 +55,18 @@ class ResetPasswordForm(forms.Form):
     password1 = forms.CharField(label='пароль', widget=forms.PasswordInput)
     password2 = forms.CharField(label='повторите пароль', widget=forms.PasswordInput)
 
+class FortgotPasswordForm(forms.Form):
+    email = forms.EmailField(label='почта привязанная к аккаунту')
+
+    def clean_email(self):
+        user_email = self.cleaned_data['email']
+        try:
+            User.objects.get(email=user_email)
+            return user_email
+        except User.DoesNotExist:
+            raise ValidationError('аккаунта с данной почтой не существует')
+
+
 
 
   

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from .forms import RegisterForm, LoginForm, ProfileInfoForm, ResetPasswordForm
+from .forms import RegisterForm, LoginForm, ProfileInfoForm, ResetPasswordForm, FortgotPasswordForm
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -126,9 +126,16 @@ def reset_password_proccess(request, token):
         form = ResetPasswordForm()
     return render(request, 'account/reset_password.html', {'form': form, 'flag': flag})
     
-
-
-
-
-
-
+def forgot_password(request):
+    if request.method == 'POST':
+        form = FortgotPasswordForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = User.objects.get(email=cd['email'])
+            token = PasswordResetTokenGenerator()
+            token = token.make_token(user)
+            services.reset_password_email(user, token)
+            return render(request, 'account/reset_email_sent.html')
+    else:
+        form = FortgotPasswordForm()
+    return render(request, 'account/forgot_password.html', {'form': form})
