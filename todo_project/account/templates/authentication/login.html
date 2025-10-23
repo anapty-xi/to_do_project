@@ -11,7 +11,7 @@
     <form method="post">
         {% csrf_token %}
 
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" style="margin-top: 7rem;">
             <div class="col g-4">
                 {% bootstrap_field form.username layout='horizontal' horizontal_label_class='col' horizontal_field_class='col' %}
             </div>
@@ -19,14 +19,26 @@
 
         <div class="row">
             <div class="col">
-                {% bootstrap_field form.password layout='horizontal' horizontal_label_class='col' horizontal_field_class='col' %}
+                {% bootstrap_field form.password layout='horizontal' horizontal_label_class='col' horizontal_field_class='col' label_class='' %}
             </div>
         </div>
 
         {% bootstrap_form_errors form layout='inline' %}
+        
+        <div class="row" style="margin-top: 2rem;">
+            <div class="col-2 offset-md-3">
+                {% bootstrap_button "войти" button_type="submit" size='lg' extra_classes='form-btn-primary' %}
+                
+                <h5>или</h5>
+                <a href="{% url 'account:register' %}" class="btn btn-lg" style="background-color: #8F857D;  color: white;">зарегистрироваться</a>
+            </div>
+            <div class="col-2 offset-md-1">
+                <a href="{% url 'account:forgot_password' %}" class="btn btn-lg" style="background-color: #8F857D; color: white;">забыл пароль</a>
+            </div>
+            
+        </div>
+        
 
-        {% bootstrap_button "войти" button_type="submit" size='lg' %}
-        <a href="{% url 'account:forgot_password' %}" class="btn btn-primary">забыл пароль</a>
 
     </form>
 </div>
