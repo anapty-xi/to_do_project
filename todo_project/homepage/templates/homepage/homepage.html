@@ -9,17 +9,18 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-8">
+            <div class="d-flex flex-wrap justify-content-start">
             {% for todo in friends_todos %}
                     {% if todo.status == 'no_report' %}
-                    <div class="card m-4" style="width: 20rem;  border-color: #A22522;">
+                    <div class="card m-4" style="width: 20rem; height: 15rem; border-color: #A22522; ">
                         <div class="card-header fw-bold" style="background-color: #A22522;">
                     
                     {% elif todo.status == 'no_confirm' %}
-                    <div class="card m-4" style="width: 20rem;  border-color: #033F63;">
+                    <div class="card m-4" style="width: 20rem; height: 15rem; border-color: #033F63;">
                         <div class="card-header fw-bold" style="background-color: #033F63;">
                         
                     {% elif todo.status == 'confirmed' %}
-                    <div class="card m-4" style="width: 20rem;  border-color: #104911;">
+                    <div class="card m-4" style="width: 20rem; height: 15rem; border-color: #104911;">
                         <div class="card-header fw-bold" style="background-color: #104911;">
                     {% endif %}
                                 <a href="{{ todo.get_user_absolute_url }}" class="text-decoration-none" style="color: white;">{{ todo.user.username }}</a>
@@ -28,7 +29,7 @@
                             <h5 class="card-title">
                                 <a href="{{ todo.get_absolute_url }}" class="text-decoration-none">{{ todo.name }}</a>
                             </h5>
-                            <p class="card-text">{{ todo.description }}</p>
+                            <p class="card-text">{{ todo.description|truncatechars:100 }}</p>
                         </div>
                         <div class="card-footer text-muted">
                             {{ todo.publish_date }}
@@ -37,27 +38,28 @@
             {% empty %}
             <h1>У ваших друзей нет активных ToDo</h1>
             {% endfor %}
+            </div>
         </div>
-
         <div class="col-4">
-            {% for todo in user_todos %}
-            {% if todo.status == 'no_report' %}
-            <div class="card text-bg-secondary mb-3">
-            {% elif todo.status == 'no_confirm' %}
-            <div class="card text-bg-warning">
-            {% elif todo.status == 'confirmed' %}
-            <div class="card text-bg-success">
-            {% endif %}
-                <div class="card-body">
-                        <h5 class="card-title">
-                            <a href="{{ todo.get_absolute_url }}">{{ todo.name }}</a>
-                        </h5>
-                        <p class="card-text">{{ todo.description }}</p>
+            <div class="card m-4" style="border-color: black;">
+                <div class="card-header fw-bold"><h4>Ваши ToDO на сегодня</h4></div>
+                <ul class="list-group listgroup-flush">
+                {% for todo in user_todos %}
+                        <li class="list-group-item text-center">
+                            <a href="{{ todo.get_abcolute_url }}" class="text-decoration-none" style="color: black;">
+                                <h3 class="fw-normal fst-italic text-decoration-underline"> -{{ todo.name }}</h3>
+                            </a>
+                        </li>
+                
+                {% empty %}
+                </ul>
+                    <h3 class="fw-normal">У вас нет ToDO на сегодня</h3>   
+                 
+                {% endfor %}
+                <div class="card-footer">
+                    <a href="{% url 'todos:todo_add' %}" class="text-decoration-none">Создать еще?</a>
                 </div>
             </div>
-            {% empty %}
-            <h1>У вас нет активных ToDo</h1>
-            {% endfor %}
         </div>
     </div>
 
