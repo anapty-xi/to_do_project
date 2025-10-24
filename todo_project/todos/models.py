@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from account.models import UserProxy
 
 
 class Todo(models.Model):
@@ -28,6 +29,11 @@ class Todo(models.Model):
         return reverse('todos:todo_info', kwargs={'pk': self.pk,
                                      'slug': self.slug,
                                      })
+    
+
+    def get_user_absilute_url(self):
+        userproxy = UserProxy.objects.get(username=self.user.username)
+        return userproxy.get_absolute_url()
     
 
 

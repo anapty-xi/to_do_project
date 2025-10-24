@@ -6,41 +6,41 @@
 
 {% block content %}
 
-<div class="container text-center">
+<div class="container">
+    <div class="col-4 offset-md-4">
+        <h1 class="offset-md-4 mt-5 mb-3">TODO</h1>
+        <div class="card shadow p-3 mb-5 " style="background-color: #DECBB7; border-color: #DECBB7;">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col mt-1">
+                            {% bootstrap_label "Логин" label_for="username" label_class='form-label fw-bold' %}
+                            {% bootstrap_field form.username show_label=False  %}
+                        </div>
+                    </div>
 
-    <form method="post">
-        {% csrf_token %}
-
-        <div class="row justify-content-center" style="margin-top: 7rem;">
-            <div class="col g-4">
-                {% bootstrap_field form.username layout='horizontal' horizontal_label_class='col' horizontal_field_class='col' %}
+                    <div class="row">
+                        <div class="col">
+                            {% bootstrap_label "Пароль" label_for="password" label_class='form-label fw-bold' %}
+                            
+                            {% bootstrap_field form.password show_label=False %}
+                            <a class="fs-6 text-decoration-none" href="{% url 'account:forgot_password' %}">Забыли пароль?</a>
+                        </div>
+                    </div>
+                    <div class="row text-center mt-4">
+                        {% bootstrap_form_errors form layout='inline' %}
+                    </div>
+                    <div class="row text-center">
+                        <div class="col mt-4">
+                            {% bootstrap_button "войти" button_type="submit" size='lg' extra_classes='form-btn-primary' %}
+                        </div>    
+                    </div>
+                </form>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col">
-                {% bootstrap_field form.password layout='horizontal' horizontal_label_class='col' horizontal_field_class='col' label_class='' %}
-            </div>
-        </div>
-
-        {% bootstrap_form_errors form layout='inline' %}
-        
-        <div class="row" style="margin-top: 2rem;">
-            <div class="col-2 offset-md-3">
-                {% bootstrap_button "войти" button_type="submit" size='lg' extra_classes='form-btn-primary' %}
-                
-                <h5>или</h5>
-                <a href="{% url 'account:register' %}" class="btn btn-lg" style="background-color: #8F857D;  color: white;">зарегистрироваться</a>
-            </div>
-            <div class="col-2 offset-md-1">
-                <a href="{% url 'account:forgot_password' %}" class="btn btn-lg" style="background-color: #8F857D; color: white;">забыл пароль</a>
-            </div>
-            
-        </div>
-        
-
-
-    </form>
+        <h6 class="fw-normal">Нет аккаунтa? <a href="{% url 'account:register' %}" class="text-decoration-none">Зарегистрироватья в ToDO</a></h6>
+    </div>
 </div>
 
 {% endblock %}

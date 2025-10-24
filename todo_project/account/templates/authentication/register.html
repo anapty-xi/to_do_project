@@ -5,40 +5,53 @@
 {% block title %}Регистрация{% endblock %}
 
 {% block content %}
-<div class="container gx-3 text-center">
-    
-    <form method="post">
-        {% csrf_token %}
+<div class="container">
+    <div class="col-4 offset-md-4">
+        <h1 class="offset-md-4 mt-5 mb-3">TODO</h1>
+        <div class="card shadow p-3 mb-5 " style="background-color: #DECBB7; border-color: #DECBB7;">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col mt-1">
+                            {% bootstrap_label "Логин" label_for="username" label_class='form-label fw-bold' %}
+                            {% bootstrap_field form.username show_label=False  %}
+                        </div>
+                    </div>
 
-        <div class="row justify-content-center">
-            <div class="col g-4">
-                {% bootstrap_field form.username layout='horizontal' size='lg' horizontal_label_class='col' horizontal_field_class='col' %}
+                    <div class="row">
+                        <div class="col">
+                            {% bootstrap_label "Почта" label_for="email" label_class='form-label fw-bold' %}
+                            {% bootstrap_field form.email show_label=False %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            {% bootstrap_label "Пароль" label_for="password1" label_class='form-label fw-bold' %}
+                            {% bootstrap_field form.password1 show_label=False %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            {% bootstrap_label "Подтвердите пароль" label_for="password2" label_class='form-label fw-bold' %}
+                            {% bootstrap_field form.password2 show_label=False %}
+                        </div>
+                    </div>
+
+                    <div class="row text-center mt-4">
+                        {% bootstrap_form_errors form layout='inline' %}
+                    </div>
+                    <div class="row text-center">
+                        <div class="col mt-4">
+                            {% bootstrap_button "зарегестрироваться" button_type="submit" size='lg' extra_classes='form-btn-primary' %}
+                        </div>    
+                    </div>
+                </form>
             </div>
         </div>
 
-        <div class="row justify-content-center">
-            <div class="col">
-                {% bootstrap_field form.email layout='horizontal' size='lg' horizontal_label_class='col' horizontal_field_class='col' %}
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col">
-                {% bootstrap_field form.password1 layout='horizontal' size='lg' horizontal_label_class='col' horizontal_field_class='col' %}
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col">
-                {% bootstrap_field form.password2 layout='horizontal' size='lg' horizontal_label_class='col' horizontal_field_class='col' %}
-            </div>
-        </div>
-        
-        
-        {% bootstrap_form_errors form layout='inline' %}
-
-        {% bootstrap_button "зарегистрироваться" button_type="submit" size='lg' %}
-    </form>    
-
+    </div>
 </div>
 {% endblock %}
