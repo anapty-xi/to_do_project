@@ -33,7 +33,7 @@ def user_register(cd):
 
 def reset_password_email(user: User, token: PasswordResetTokenGenerator):
     subject = f'Изменита пораль аккаунта {user.username}'
-    link = f'http://127.0.0.1:8000/account/reset/{token}/'
+    link = f'http://127.0.0.1:8000/account/reset/{user.pk}/{token}/'
     body = f'Пожалуйста, воспользуйтесь ссылкой для изменения пароля {link}'
     email = EmailMessage(
         subject,

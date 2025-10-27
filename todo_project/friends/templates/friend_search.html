@@ -37,24 +37,40 @@
 
 
     <div class="col-6 offset-md-1 gy-5">
-        <form method="post">
-            {% csrf_token %}
+        <div class="card shadow mb-2" style="background-color: #DECBB7; border-color: #DECBB7;">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col mt-1">
+                                {% bootstrap_label "Поиск по логину" label_for="username" label_class='form-label fw-bold' %}
+                                {% bootstrap_field form.username show_label=False  %}
+                            </div>
+                        </div>
 
-            {% bootstrap_form form layout='horizontal' %}
-            {% bootstrap_button "поиск" button_type="submit" button_class="btn-primary" %}
-        </form>
+                        <div class="row text-center mt-4">
+                            {% bootstrap_form_errors form layout='inline' %}
+                        </div>
+                        <div class="row text-center">
+                            <div class="col mt-4">
+                                {% bootstrap_button "поиск" button_type="submit" size='lg' extra_classes='form-btn-primary' %}
+                            </div>    
+                        </div>
+                    </form>
+                </div>
+            </div>
         <div class="d-flex justify-content-center">
 
                 {% for user in user_queryset %}
-                <div class="card" style="width: 18rem; margin: 2rem;">
+                <div class="card" style="width: 18rem; margin: 2rem; height: 20rem;">
                     {% if user.profile.photo %}
-                    <img src="{{ user.profile.photo.url }}" class="card-img-top">
+                    <img src="{{ user.profile.photo.url }}" class="card-img-top" style="height: 80%;">
                     {% else %}
-                    <img src="{% static 'user_placeholder.png' %}" class="img-fluid">
+                    <img src="{% static 'user_placeholder.png' %}" class="card-img-top" style="height: 80%;">
                     {% endif %}
                     <div class="card-body">
                         <p class="card-text">
-                            <a href="{{ user.get_absolute_url }}" class="btn btn-secondary">{{ user.username }}</a>
+                            <a href="{{ user.get_absolute_url }}" class="text-decoration-none">{{ user.username }}</a>
                         </p>
                         
                     </div>

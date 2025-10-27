@@ -4,7 +4,7 @@ from . import views
 app_name = 'account'
 
 urlpatterns = [
-    path('reset/<str:token>/', views.reset_password_proccess, name='reset_password_proccess'),
+    path('reset/<int:pk>/<str:token>/', views.reset_password_proccess, name='reset_password_proccess'),
     path('frorgot_password/', views.forgot_password, name='forgot_password'),
     path('password_reset/', views.reset_password_email, name='reset_password_email'),
     path('logout/', views.logout_view, name='logout'),

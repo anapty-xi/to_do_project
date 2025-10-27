@@ -54,6 +54,7 @@ class ProfileInfoForm(forms.Form):
 
 
 
+
 class ResetPasswordForm(forms.Form):
     password1 = forms.CharField(label='пароль', widget=forms.PasswordInput)
     password2 = forms.CharField(label='повторите пароль', widget=forms.PasswordInput)

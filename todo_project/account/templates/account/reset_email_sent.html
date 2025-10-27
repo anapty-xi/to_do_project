@@ -6,9 +6,25 @@
 
 {% block content %}
 
-
-    <div class="container-fluid text-center">
-        <h1 style="margin-top: 5rem;">Письмо отправлено на вашу почту</h1>
+<div class="d-flex flex-wrap">
+    <div class="col offset-3">
+        <div class="card m-4" style="width: 50rem; height: 40rem; border-color: #104911;">
+            <div class="card-header fw-bold" style="background-color: #104911;  height: 3rem; color: white;">system</div>
+            
+            <div class="card-body" style="background-color: #ffffff;">
+                <h1 class="card-title">
+                    Отправить письмо для изменения пароля
+                </h1>
+                <p class="card-text fs-2">Пользователь запросил писмо о смене пароля, оно дойтет через некоторое время...</p>
+            </div>
+            <div class="card-footer text-muted">
+                {{ now }}
+            </div>
+        </div>
     </div>
+</div>
+    
+
+    
 
 {% endblock %}

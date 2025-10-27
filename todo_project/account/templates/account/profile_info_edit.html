@@ -11,7 +11,7 @@
         <h1 class="offset-md-4 mt-5 mb-3">Изменение профиля</h1>
         <div class="card shadow p-3 mb-5 " style="background-color: #DECBB7; border-color: #DECBB7;">
             <div class="card-body">
-                <form method="post">
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col mt-1">

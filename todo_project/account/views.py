@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from . import services
 from django.contrib.auth.models import User
+from datetime import datetime
 import sys
 sys.path.append('..')
 
@@ -75,9 +76,9 @@ def profile_info_edit(request):
                 services.user_profile_update_profile_model(request, cd)
                 return redirect('/account/profile_info')
             else:
-                if len(error_dict['username']) == 0:
+                if len(error_dict['username']) != 0:
                     form.add_error(field='username', error=ValidationError('Логин уже занят'))
-                elif len(error_dict['email']) == 0:
+                elif len(error_dict['email']) != 0:
                     form.add_error(field='email', error=ValidationError('Почта уже привязана к другому аккаунту'))
 
         
@@ -110,22 +111,24 @@ def reset_password_email(request):
     token = PasswordResetTokenGenerator()
     token = token.make_token(request.user)
     services.reset_password_email(request.user, token)
-    return render(request, 'account/reset_email_sent.html')
+
+    now = datetime.now()
+    return render(request, 'account/reset_email_sent.html', {'now': now})
 
 
-def reset_password_proccess(request, token):
+def reset_password_proccess(request, pk, token):
     if request.method == 'POST':
         form = ResetPasswordForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = request.user
+            user = User.objects.get(pk=pk)
             user.set_password(cd['password1'])
             user.save()
             flag = 'success'
     else:
         try:
             checker = PasswordResetTokenGenerator()
-            if checker.check_token(user=request.user, token=token):
+            if checker.check_token(user=User.objects.get(pk=pk), token=token):
                 flag = 'get'
             else:
                 flag = 'token-fail'

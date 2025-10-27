@@ -14,86 +14,85 @@
 
         <div class="col-5 g-5 text-center">
             {% if not user.profile.photo %}
-                <img src="{% static 'user_placeholder.png' %}" class="rounded img-fluid" style="height: 25rem;">
+                <img src="{% static 'user_placeholder.png' %}" class="img-fluid" style="height: 28rem; margin-bottom: 2rem;">
             {% else %}
-                <img src="{{ user.profile.photo.url }}" class="rounded img-fluid" style="height: 25rem;">
+                <img src="{{ user.profile.photo.url }}" class="rounded img-fluid" style="height: 28rem; margin-bottom: 2rem;">
             {% endif %}
         </div>
 
         <div class="col-7 g-5"> 
-            <div class="card" style="height: 25rem;">
+
+            <div class="card" style="height: 28rem;">
                 <div class="card-body">
-                    <h5 class="card-tit">Аккаунт {{ user.username }}</h5>
-                    <h6 class="card-subtitle text-body-secondary">{{ user.username }}</h6>
                     <div class="row">
-
-                        <div class="col gy-4">
-                            <div class="card-text">Пол: {{ user.profile.sex }}</div> 
-                        </div>
-
-                        <div class="col gy-4">
-                            <div class="card-text">Дата рождения: {{ user.profile.birthd }}</div>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col">
-                            <div class="card-text">Почта: {{ user.email }}</div>
-                        </div>
-                        <div class="col">
-                            <div class="card-text">Пол: {{ user.profile.sex }}</div>
+                        <div class="col-6">
+                            <h1 class="card-title mt-4" style="margin-left: 3rem;">{{ user.username }}</h1>
                         </div>
                     </div>
-
+                    
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-text" style="margin-left: 2rem;">
+                                <h6 style="font-weight: 300;">
+                                    Пол: {{ user.profile.sex }} Дата рождения: {{ user.profile.birthd }} Почта: {{ user.email }}
+                                </h6>
+                            </div> 
+                        </div>
                     <div class="row">
                         <div class="col gy-3">
-                            <div class="card-text">О себе: {{ user.profile.preview }}</div>
+                            <div class="card-text" style="height: 11rem;">О себе: {{ user.profile.preview }}</div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col gy-5">
-                            {% if friend_add_flag %}
-                            <a href="{% url 'friends:friend_add' user.pk user.username %}" class="btn btn-primary">добавить в друзья</a>
+
+                    <div class="row text-center">
+                        <div class="col g-5">
+                            {% if friend_add_flag != True %}
+                            <a href="{% url 'friends:friend_delete' user.pk user.username %}" class="btn btn-primary btn-lg" style="background-color: #972D07; border-color: #972D07; color: white;">удалить из друзей</a>
                             {% else %}
-                            <a href="{% url 'friends:friend_delete' user.pk user.username %}" class="btn btn-danger">удалить из друзей</a>
+                            <a href="{% url 'friends:friend_add' user.pk user.username %}" class="btn btn-primary btn-lg" style="background-color: #DECBB7; border-color: #DECBB7; color: white;">добавить в друзья</a>
                             {% endif %}
-                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
-
-        <div class="container-fluid g-4">
-            <div class="card">
-                <div class="card-header">{{ user.usernmae }} todo</div>
-                <ul class="list-group list-group-flush">
-                    {% for todo in user_todos %}
-                    <li class="list-group-item">
-                        {% if todo.status == 'no_report' %}
-                        <div class="card text-bg-secondary mb-3">
-                        {% elif todo.status == 'no_confirm' %}
-                        <div class="card text-bg-warning">
-                        {% elif todo.status == 'confirmed' %}
-                        <div class="card text-bg-success">
-                        {% endif %}
-                            <div class="card-header">
-                                <a>{{ todo.name }}</a>
-                            </div>
-                            <div class="card-body">{{ todo.description }}</div>
-                        </div>
-                    </li>
-                    {% empty %}
-                    <li class="list-group-item">
-                        <a>У {{ user.username }} нет todo на данный момент</a>
-                    </li>
-                    {% endfor %}
-
-                </ul>
-            </div>
-        </div>    
-
     </div>
 </div>
+
+<div class="row">
+    <div class="col-4 offset-1">
+        <h1 class="ml-2">ToDO {{ user.username }}</h1>
+    </div>
+
+</div>
+<div class="d-flex flex-wrap justify-content-start">
+    {% for todo in user_todos %}
+            {% if todo.status == 'no_report' %}
+            <div class="card m-4" style="width: 25rem; height: 20rem; border-color: #A22522;">
+                <div class="card-header fw-bold" style="background-color: #A22522; height: 3rem;">
+            
+            {% elif todo.status == 'no_confirm' %}
+            <div class="card m-4" style="width: 25rem; height: 20rem; border-color: #033F63;">
+                <div class="card-header fw-bold" style="background-color: #033F63;  height: 3rem;">
+                
+            {% elif todo.status == 'confirmed' %}
+            <div class="card m-4" style="width: 25rem; height: 20rem; border-color: #104911;">
+                <div class="card-header fw-bold" style="background-color: #104911;  height: 3rem;">
+            {% endif %}
+                </div>
+                <div class="card-body" style="background-color: #ffffff;">
+                    <h5 class="card-title">
+                        <a href="{{ todo.get_absolute_url }}" class="text-decoration-none">{{ todo.name }}</a>
+                    </h5>
+                    <p class="card-text">{{ todo.description|truncatechars:100 }}</p>
+                </div>
+                <div class="card-footer text-muted">
+                    {{ todo.publish_date }}
+                </div>
+            </div>
+    {% empty %}
+    <h1>У ваших друзей нет активных ToDo</h1>
+    {% endfor %}
+    </div>
 
 {% endblock %}
