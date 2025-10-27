@@ -66,10 +66,19 @@ def profile_info_edit(request):
     if request.method == 'POST':
         form = ProfileInfoForm(request.POST, request.FILES)
         if form.is_valid():
-            cd = form.cleaned_data  
-            services.user_profile_update_user_model(request, cd)
-            services.user_profile_update_profile_model(request, cd)
-            return redirect('/account/profile_info')
+            cd = form.cleaned_data 
+            error_dict = {}
+            error_dict['username'] = User.objects.exclude(pk=user.pk).filter(username=cd['username'])
+            error_dict['email'] =  User.objects.exclude(pk=user.pk).filter(email=cd['email'])
+            if len(error_dict['username']) == 0 and len(error_dict['email']) == 0:
+                services.user_profile_update_user_model(request, cd)
+                services.user_profile_update_profile_model(request, cd)
+                return redirect('/account/profile_info')
+            else:
+                if len(error_dict['username']) == 0:
+                    form.add_error(field='username', error=ValidationError('Логин уже занят'))
+                elif len(error_dict['email']) == 0:
+                    form.add_error(field='email', error=ValidationError('Почта уже привязана к другому аккаунту'))
 
         
     else:
