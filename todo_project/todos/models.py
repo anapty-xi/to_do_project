@@ -12,7 +12,7 @@ class Todo(models.Model):
     user = models.ForeignKey(User, related_name='todo', on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     slug = models.SlugField(max_length=64)
-    description = models.TextField()
+    description = models.TextField(max_length=560)
     img = models.ImageField(upload_to='todo_images/', blank=True, null=True)
     publish_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=StatusChoises, default=StatusChoises.no_report)

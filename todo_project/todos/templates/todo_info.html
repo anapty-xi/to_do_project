@@ -2,50 +2,73 @@
 
 {% load django_bootstrap5 %}
 
-{% block title %}Добавить задачу{% endblock %}
+{% block title %}ToDO{% endblock %}
 
 {% block content %}
 
 <div class="row">
     <div class="col-10 offset-md-1 gy-5">
-        {% if current_todo.status == 'no_report' %}
-        <div class="card text-bg-secondary mb-3">
-        {% elif current_todo.status == 'no_confirm' %}
-        <div class="card text-bg-warning">
-        {% elif current_todo.status == 'confirmed' %}
-        <div class="card text-bg-success">
-        {% endif %}
-            <div class="card-body">
-                <div class="card-title">
-                    <h1>{{ current_todo.name }}</h1>
-                </div>
-                <div class="card-text" style="margin-bottom: 2rem;">{{ current_todo.description }}</div>
-            {% if is_user_todo %}
-                <a href="{% url 'todos:todo_del' current_todo.pk current_todo.slug %}" class="btn btn-secondary btn-md" style="margin-bottom: 3rem;">удалить</a>
-                <a href="{% url 'todos:todo_edit' current_todo.pk current_todo.slug %}" class="btn btn-primary btn-md" style="margin-bottom: 3rem;">изменить</a>
-
-                {% if not current_todo.report %}
-                <a href="{% url 'todos:report_add' current_todo.pk current_todo.slug %}" class="btn btn-primary btn-md"style="margin-bottom: 3rem;" >создать отчет</a>
-            </div>
-                {% else %}
-                <div class="card-footer">
-                    <h1>Отчет ToDo</h1>
-                    <h5>{{ current_todo.report.description }}</h5>
-                    <a href="{% url 'todos:report_edit' current_todo.pk current_todo.slug %}" class="btn btn-primary btn-md">изменить отчет</a>
-                </div>
-                {% endif %}
-            {% else %}
-                {% if current_todo.report %}
-                <div class="card-footer">
-                    <h1>Отчет ToDo</h1>
-                    <h5>{{ current_todo.report.description }}</h5>
-                    <a href="{% url 'todos:todo_confirm' current_todo.pk current_todo.slug %}" class="btn btn-primary">подтвердить выполнение</a>
-                </div>
-                {% endif %}
-            {% endif %}
+            {% with current_todo as todo %}
+                {% if todo.status == 'no_report' %}
+                <div class="card m-4" style="border-color: #A22522; ">
+                    <div class="card-header fw-bold" style="background-color: #A22522;">
                 
-            </div>
-        </div>
+                {% elif todo.status == 'no_confirm' %}
+                <div class="card m-4" style="border-color: #033F63;">
+                    <div class="card-header fw-bold" style="background-color: #033F63;">
+                    
+                {% elif todo.status == 'confirmed' %}
+                <div class="card m-4" style="border-color: #104911;">
+                    <div class="card-header fw-bold" style="background-color: #104911;">
+                {% endif %}
+                        <h2 style="color: white;">{{ todo.user.username }}</h2>
+                    </div>
+                    <div class="card-body" style="background-color: #ffffff;">
+                        <h5 class="card-title fs-1 m-3">
+                            <p>{{ todo.name }}</p>
+                        </h5>
+                        <p class="card-text fs-2" style="margin-left: 2rem;">{{ todo.description }}</p>
+                    </div>
+                    {% if is_user_todo %} 
+                        <div class="row mb-4">
+                            <div class="col">
+                                <span style="margin-left: 2rem;">
+                                    <a href="{% url 'todos:todo_edit' todo.pk todo.slug %}" class="btn btn-primary btn-lg" style="background-color: #DECBB7; border-color: #DECBB7; color: black;">изменить</a>
+                                    <a href="{% url 'todos:todo_del' todo.pk todo.slug %}" class="btn btn-primary btn-lg" style="background-color: #972D07; border-color: #972D07; color: black;">удалить</a>
+                                </span>                                    
+                            </div>
+                            <div class="col offset-6">
+                                <a href="{% url 'todos:report_add' todo.pk todo.slug %}" class="btn btn-primary btn-lg" style="background-color: #DECBB7; border-color: #DECBB7; color: black;">создать отчет</a>
+                            </div>
+                        </div>
+
+                        
+                    {% endif %}
+
+                    {% if todo.report %}
+                        <ul class="list-group list-group-flush">
+                            <h3 class="m-4">Отчет</h3>
+                            <li class="list-group-item fs-2" style="margin-left: 2rem;">{{ todo.report.description }}
+                            <div class="row mt-3">
+                                <div class="col-3">
+                                    {% if is_user_todo == False and todo.status == 'no_confirm' %}
+                                        <a href="{% url 'todos:todo_confirm' todo.pk todo.slug %}" class="btn btn-primary btn-lg" style="background-color: #DECBB7; border-color: #DECBB7; color: black;">Подтвердить отчет</a>
+                                    {% endif %}
+                                </div>
+                                
+                            </div>
+                            
+
+                            </li>
+                        </ul>
+                        
+                    {% endif %}
+                    <div class="card-footer text-muted mt-4">
+                        {{ todo.publish_date }}
+                    </div>
+                </div>
+            {% endwith %}
+                </div>
 
     </div>
 </div>

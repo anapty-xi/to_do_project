@@ -2,32 +2,41 @@
 
 {% load django_bootstrap5 %}
 
-{% block title %}Добавить задачу{% endblock %}
+{% block title %}Добавить отчет{% endblock %}
 
 {% block content %}
 
-<div class="container-fluid text-center">
-    <div class="row">
-        <h1>Создайте отчет о проделаной работе</h1>
-    </div>
+<div class="contaner text-center">
+    <h1 style="margin: 3rem;">
+        Создайте отчет
+    </h1>
+</div>
 
-    <div class="row text-center">
-        <div class="col-6 offset-md-3 gy-4">
-            <form method="post" enctype="multipart/form-data">
+
+<div class="col-8 offset-2">
+    <div class="card shadow p-3 mb-5 " style="background-color: #DECBB7; border-color: #DECBB7;">
+        <div class="card-body">
+            <form method="post">
                 {% csrf_token %}
+                <div class="row">
+                    <div class="col mt-1">
+                        {% bootstrap_label "отчет" label_for="description" label_class='form-label fw-bold' %}
+                        {% bootstrap_field form.description show_label=False  %}
+                    </div>
+                </div>
 
-
-                {% bootstrap_field form.description layout="horizontal" %}
-
-                
-                {% bootstrap_button "создать" button_type="submit" button_class="btn-primary" %}
+                <div class="row text-center mt-4">
+                    {% bootstrap_form_errors form layout='inline' %}
+                </div>
+                <div class="row text-center">
+                    <div class="col mt-4">
+                        {% bootstrap_button "создать" button_type="submit" size='lg' extra_classes='form-btn-primary' %}
+                    </div>    
+                </div>
             </form>
         </div>
     </div>
-    
-    
 </div>
-
 
 
 

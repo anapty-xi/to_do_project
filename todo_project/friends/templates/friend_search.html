@@ -13,24 +13,20 @@
     <div class="col-4 gy-5" style="margin-left: 5rem;">
         <h5>Ваши друзья</h5>
         {% for friend in user_friends %}
-        <div class="card" style="height: 10rem; margin-bottom: 2rem;">
-            <div class="row g-0">
-                <div class="col-md-4">
+        <div class="container over" style="height: 10rem;">
+            <div class="row">
+                <div class="col-4">
                     {% if friend.profile.photo %}
-                    <img src="{{ friend.profile.photo.url }}" class="img-fluid rounded-start" style="height: 10rem;">
+                        <img src="{{ friend.profile.photo.url }}" class="img-fluid">
+                        
                     {% else %}
-                    <img src="{% static 'user_placeholder.png' %}" class="img-fluid rounded-start" style="height: 10rem;">
+                        <img src="{% static 'user_placeholder.png' %}" class="img-fluid">
                     {% endif %}
                 </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="title">
-                            <a href="{{ friend.get_absolute_url }}" class="btn btn-secondary">{{ friend.username }}</a>
-                        </h5>
-                    </div>
+                <div class="col-6">
+                    <a href="{{ friend.get_abcolute_url }}">{{ friend.username }}</a>
                 </div>
             </div>
-
         </div>
         {% endfor %}
     </div>
