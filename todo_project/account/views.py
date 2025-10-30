@@ -108,10 +108,11 @@ def another_profile_info(request, pk, username):
 
 @login_required
 def reset_password_email(request):
-    token = PasswordResetTokenGenerator()
-    token = token.make_token(request.user)
-    services.reset_password_email(request.user, token)
 
+    '''метод для вошедшего пользователя: отправка письма с токеном'''
+    
+    token = services.make_token(request.user)
+    services.reset_password_email(request.user, token)
     now = datetime.now()
     return render(request, 'account/reset_email_sent.html', {'now': now})
 
@@ -121,10 +122,10 @@ def reset_password_proccess(request, pk, token):
         form = ResetPasswordForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = User.objects.get(pk=pk)
+            user = services.get_user_by_pk(pk=pk)
             user.set_password(cd['password1'])
             user.save()
-            flag = 'success'
+            flag = 'success'   #нужно сделать разные пердставления, а не флаги, дополнить services
     else:
         try:
             checker = PasswordResetTokenGenerator()
@@ -139,13 +140,15 @@ def reset_password_proccess(request, pk, token):
     return render(request, 'account/reset_password.html', {'form': form, 'flag': flag})
     
 def forgot_password(request):
+
+    '''метод для не вошедшего пользователя: отправка письма с токеном'''
+
     if request.method == 'POST':
         form = FortgotPasswordForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = User.objects.get(email=cd['email'])
-            token = PasswordResetTokenGenerator()
-            token = token.make_token(user)
+            user = services.get_user_by_email(cd['email'])
+            token = services.make_token(user)
             services.reset_password_email(user, token)
             return render(request, 'account/reset_email_sent.html')
     else:

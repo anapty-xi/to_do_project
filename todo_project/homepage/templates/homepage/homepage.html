@@ -36,7 +36,23 @@
                         </div>
                     </div>
             {% empty %}
-            <h1>У ваших друзей нет активных ToDo</h1>
+                <div class="d-flex flex-wrap">
+                    <div class="col offset-3">
+                        <div class="card m-4" style="width: 50rem; height: 40rem; border-color: #104911;">
+                            <div class="card-header fw-bold" style="background-color: #104911;  height: 3rem; color: white;">system</div>
+                            
+                            <div class="card-body" style="background-color: #ffffff;">
+                                <h1 class="card-title">
+                                    У ваших друзей нет ToDO...
+                                </h1>
+                                <p class="card-text fs-2">Может <span><a href="{% url 'todos:friends_reminder' %}" class="text-decoration-none">напомнить</a></span> о создании задач на сегодня?</p>
+                            </div>
+                            <div class="card-footer text-muted">
+                                {{ now }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
             </div>
         </div>

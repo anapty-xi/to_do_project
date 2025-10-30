@@ -60,6 +60,7 @@
 </div>
 
 <div class="row">
+    {% if user_todos %}
     <div class="col-4 offset-1">
         <h1 class="ml-2">Ваши ToDO</h1>
     </div>
@@ -67,6 +68,17 @@
         <a href="{% url 'todos:todo_add' %}" class="text-decoration-none">
         <h1>Добaвить еще?</h1></a>
     </div>
+    {% else %}
+    <div class="col-8 offset-2">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-text text-center">
+                    <h3> У вас нет ToDO на сегодня <span><a href="{% url 'todos:todo_add' %}" class="text-decoration-none">Создать?</a></span></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 <div class="d-flex flex-wrap justify-content-start">
     {% for todo in user_todos %}
@@ -94,7 +106,7 @@
                 </div>
             </div>
     {% empty %}
-    <h1>У ваших друзей нет активных ToDo</h1>
+    <h1></h1>
     {% endfor %}
     </div>
     

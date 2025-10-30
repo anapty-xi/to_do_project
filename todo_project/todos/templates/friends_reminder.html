@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}Добавить отчет{% endblock %}
+
+{% block content %}
+
+<div class="d-flex flex-wrap">
+    <div class="col offset-3">
+        <div class="card m-4" style="width: 50rem; height: 40rem; border-color: #104911;">
+            <div class="card-header fw-bold" style="background-color: #104911;  height: 3rem; color: white;">system</div>
+            
+            <div class="card-body" style="background-color: #ffffff;">
+                <h1 class="card-title">
+                    Письма отправлены
+                </h1>
+                <p class="card-text fs-2">Отправили письмо {{ emails_amount }} вашим друзьям с просьбой создать новые ToDO! </p>
+            </div>
+            <div class="card-footer text-muted">
+                {{ now }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

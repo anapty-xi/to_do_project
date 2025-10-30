@@ -3,6 +3,8 @@ from .forms import TodoAddAndEditForm, ReportAddForm
 from django.urls import reverse
 from . import services
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
+from account.services import get_user_by_pk_username
 
 
 
@@ -110,3 +112,27 @@ def todo_confirm(requset, pk, slug):
                                           todo.user.username,
                                           todo.name)
     return redirect(todo.get_absolute_url())
+
+
+@login_required
+def friends_reminder(request):
+
+    '''отправка писем всем друзьям пользователя с просьбой создать ToDO'''
+
+    user = request.user
+    friends = services.get_user_friends(user)
+    services.friends_reminder_mail(user, friends)
+    emails_amount = friends.count()
+    now = datetime.now()
+    return render(request, 'friends_reminder.html', {'emails_amount': emails_amount, 'now': now})
+
+@login_required
+def friend_reminder(request, pk, username):
+
+    '''отправка письма конкретному другу с просьбой создать ToDO'''
+
+    user = request.user
+    friend = get_user_by_pk_username(pk, username)
+    services.friends_reminder_mail(user, [friend.email])
+    now = datetime.now()
+    return render(request, 'friends_reminder.html', {'now': now})

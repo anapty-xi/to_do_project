@@ -11,6 +11,8 @@ urlpatterns = [
     path('edit/<int:pk>/<str:slug>/', views.todo_edit, name='todo_edit'),
     path('report/add/<int:pk>/<str:slug>/', views.report_add, name='report_add'),
     path('report/edit/<int:pk>/<str:slug>/', views.report_edit, name='report_edit'),
+    path('friends_remind/<int:pk>/<str:username>/', views.friend_reminder, name='friend_reminder'),
+    path('friends_remind/', views.friends_reminder, name='friends_reminder'),
+
     
-   
 ]

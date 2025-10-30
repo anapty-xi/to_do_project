@@ -2,12 +2,20 @@ from django.core.mail import EmailMessage
 from .models import Todo, TodoReport
 from django.utils.text import slugify
 from unidecode import unidecode
+from django.contrib.auth.models import User
 
 
+def get_user_friends(user):
+    return user.profile.friends.all()
+
+
+
+
+'''отправка электронных писем'''
 
 def your_todo_has_confirmed_mail(user_email, username, todo_name):
     subject = 'Ваше Todo подтверждено!'
-    body = 'Пользователь {} подтвердил ваше ToDo {}. Хорошая работа'.format(username, todo_name)
+    body = f'Пользователь {username} подтвердил ваше ToDo {todo_name}. Хорошая работа'
     email = EmailMessage(
         subject,
         body,
@@ -15,11 +23,25 @@ def your_todo_has_confirmed_mail(user_email, username, todo_name):
     )
     email.send(fail_silently=False)
 
+
+def friends_reminder_mail(user, friends):
+    subject = 'Время распланировать свой день'
+    body = f'Пользователь {user.username} заметил отсутствие ваших ToDO! Есть минутка записать задачи?'
+    try:
+        friends = [friend.user.email for friend in friends]
+    except: pass
+    email = EmailMessage(
+        subject,
+        body,
+        to=friends,
+    )
+    email.send(fail_silently=False)
+
         
 
 
 
-'''операции с ToDo (tested)'''
+'''операции с ToDo'''
 
 def get_todo_by_pk_slug(pk, slug):
     return Todo.objects.get(pk=pk, slug=slug)

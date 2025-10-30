@@ -10,6 +10,12 @@ from django.core.mail import EmailMessage
 def get_user_by_pk_username(pk, username):
     return User.objects.get(pk=pk, username=username)
 
+def get_user_by_email(email: str) -> User:
+    return User.objects.get(email=email)
+
+def get_user_by_pk(pk):
+    return User.objects.get(pk=pk)
+
 
 '''логика работы с аккаунтом'''
 
@@ -30,6 +36,10 @@ def user_register(cd):
     User.objects.create_user(username=cd['username'], email=cd['email'],
                             password=cd['password1'])
     Profile.objects.create(user=User.objects.get(username=cd['username']))
+
+def make_token(user: User):
+    token = PasswordResetTokenGenerator()
+    token = token.make_token(user)
 
 def reset_password_email(user: User, token: PasswordResetTokenGenerator):
     subject = f'Изменита пораль аккаунта {user.username}'
@@ -69,6 +79,14 @@ def user_profile_update_profile_model(request, cd):
     if cd['photo']:
         user_profile.photo = cd['photo']
         user_profile.save()
+
+
+
+
+
+
+
+
 
 
     

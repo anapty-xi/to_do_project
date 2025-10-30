@@ -60,10 +60,21 @@
 </div>
 
 <div class="row">
-    <div class="col-4 offset-1">
-        <h1 class="ml-2">ToDO {{ user.username }}</h1>
-    </div>
-
+    {% if user_todos %}
+        <div class="col-4 offset-1">
+            <h1 class="ml-2">ToDO {{ user.username }}</h1>
+        </div>
+    {% else %}
+        <div class="col-8 offset-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-text text-center">
+                        <h3> У {{ user.username }} нет ToDO на сегодня <span><a href="{% url 'todos:friend_reminder' user.pk user.username %}" class="text-decoration-none">Напомнить создать?</a></span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
 <div class="d-flex flex-wrap justify-content-start">
     {% for todo in user_todos %}
@@ -90,8 +101,6 @@
                     {{ todo.publish_date }}
                 </div>
             </div>
-    {% empty %}
-    <h1>У ваших друзей нет активных ToDo</h1>
     {% endfor %}
     </div>
 

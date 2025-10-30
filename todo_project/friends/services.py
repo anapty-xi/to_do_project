@@ -1,12 +1,6 @@
 from account.models import UserProxy, Profile
-import todos
 from .models import Friendship
 from django.contrib.auth.models import User
-
-
-
-
-
 
 
 def user_friends_with_gau(request):
