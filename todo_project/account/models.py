@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import datetime
 from django.urls import reverse
+from todos.models import Todo
 
 class Profile(models.Model):
     class SexChoises(models.TextChoices):
@@ -34,6 +35,9 @@ class UserProxy(User):
     def get_absolute_url(self):
         return reverse('account:another_profile_info', kwargs={'pk': self.pk,
                                                               'username': self.username})
+    
+    def get_number_todos_status(self, status):
+        return Todo.objects.filter(user=self, status=status).count()
     
 
 

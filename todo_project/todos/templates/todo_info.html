@@ -38,7 +38,10 @@
                                 </span>                                    
                             </div>
                             <div class="col offset-6">
+                                {% if todo.status == 'no_report' %}
                                 <a href="{% url 'todos:report_add' todo.pk todo.slug %}" class="btn btn-primary btn-lg" style="background-color: #DECBB7; border-color: #DECBB7; color: black;">создать отчет</a>
+                                {% endif %}
+                                
                             </div>
                         </div>
 

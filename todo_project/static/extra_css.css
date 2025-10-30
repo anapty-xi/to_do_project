@@ -3,3 +3,17 @@
     color: white !important;
     border-color: #433633 !important;
 }
+
+.friends-container {
+    height: 10rem; 
+    background-color: #DECBB7; 
+    border-width: 1px;
+    border-style: solid;
+    border-color: #DECBB7;
+    border-bottom-color: black;
+}
+
+.dot-badge {
+    color: #972D07;
+    background-color: #972D07;
+}

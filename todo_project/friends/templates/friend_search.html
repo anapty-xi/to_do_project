@@ -4,6 +4,8 @@
 
 {% load static %}
 
+{% load friends_tags %}
+
 {% block title %}Поиск друзей{% endblock %}
 
 {% block content %}
@@ -13,18 +15,22 @@
     <div class="col-4 gy-5" style="margin-left: 5rem;">
         <h5>Ваши друзья</h5>
         {% for friend in user_friends %}
-        <div class="container over" style="height: 10rem;">
+        <div class="friends-container">
             <div class="row">
                 <div class="col-4">
                     {% if friend.profile.photo %}
-                        <img src="{{ friend.profile.photo.url }}" class="img-fluid">
+                        <img src="{{ friend.profile.photo.url }}" class="img-fluid" style="height: 10rem; width: 10rem;">
                         
                     {% else %}
-                        <img src="{% static 'user_placeholder.png' %}" class="img-fluid">
+                        <img src="{% static 'user_placeholder.png' %}" class="img-fluid" style="height: 10rem; width: 10rem;">
                     {% endif %}
                 </div>
                 <div class="col-6">
-                    <a href="{{ friend.get_abcolute_url }}">{{ friend.username }}</a>
+                    <h2 class="mt-3"><a href="{{ friend.get_absolute_url }}" class="text-decoration-none">{{ friend.username }}</a></h2>
+                    <span class="badge rounded-pill" style="color: #972D07; background-color: #972D07; height: 15px; width: 10px;"> </span><span style="margin-right: 2rem; margin-left: 3px;">{% get_number_todos_status friend 'no_report' %}</span>
+                    <span class="badge rounded-pill" style="color: #033F63; background-color: #033F63; height: 15px; width: 10px;"> </span><span style="margin-right: 2rem; margin-left: 3px;">{% get_number_todos_status friend 'no_confirm' %}</span>
+                    <span class="badge rounded-pill" style="color: #104911; background-color: #104911; height: 15px; width: 10px;"> </span><span style="margin-right: 2rem; margin-left: 3px;">{% get_number_todos_status friend 'confirmed' %}</span>
+                    <p class="card-text fw-lighter">{{ friend.email }}</p>
                 </div>
             </div>
         </div>
@@ -38,20 +44,19 @@
                     <form method="post">
                         {% csrf_token %}
                         <div class="row">
-                            <div class="col mt-1">
+                            <div class="col-10 mt-1">
                                 {% bootstrap_label "Поиск по логину" label_for="username" label_class='form-label fw-bold' %}
                                 {% bootstrap_field form.username show_label=False  %}
                             </div>
+                            <div class="col-2">
+                                <p style="margin-top: 30%; margin-left: 20%;">{% bootstrap_button "поиск" button_type="submit" extra_classes='form-btn-primary' %}</p>
+                            </div>  
                         </div>
 
                         <div class="row text-center mt-4">
                             {% bootstrap_form_errors form layout='inline' %}
                         </div>
-                        <div class="row text-center">
-                            <div class="col mt-4">
-                                {% bootstrap_button "поиск" button_type="submit" size='lg' extra_classes='form-btn-primary' %}
-                            </div>    
-                        </div>
+
                     </form>
                 </div>
             </div>
@@ -60,15 +65,15 @@
                 {% for user in user_queryset %}
                 <div class="card" style="width: 18rem; margin: 2rem; height: 20rem;">
                     {% if user.profile.photo %}
-                    <img src="{{ user.profile.photo.url }}" class="card-img-top" style="height: 80%;">
+                    <img src="{{ user.profile.photo.url }}" class="card-img-top" style="height: 15rem; width: 15rem;">
                     {% else %}
-                    <img src="{% static 'user_placeholder.png' %}" class="card-img-top" style="height: 80%;">
+                    <img src="{% static 'user_placeholder.png' %}" class="card-img-top" style="height: 15rem; width: 15rem;">
                     {% endif %}
                     <div class="card-body">
-                        <p class="card-text">
+                        <p class="card-text mb-0">
                             <a href="{{ user.get_absolute_url }}" class="text-decoration-none">{{ user.username }}</a>
                         </p>
-                        
+                        <p class="card-text fw-lighter">{{ user.email }}</p>
                     </div>
                 </div>
                 {% endfor %}   
