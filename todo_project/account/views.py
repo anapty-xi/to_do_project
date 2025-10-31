@@ -118,27 +118,28 @@ def reset_password_email(request):
 
 
 def reset_password_proccess(request, pk, token):
+    '''смена пароля и обработка перехода по устаревшему токену'''
+    now = datetime.now()
+    user = services.get_user_by_pk(pk=pk)
     if request.method == 'POST':
-        form = ResetPasswordForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            user = services.get_user_by_pk(pk=pk)
-            user.set_password(cd['password1'])
-            user.save()
-            flag = 'success'   #нужно сделать разные пердставления, а не флаги, дополнить services
-    else:
-        try:
-            checker = PasswordResetTokenGenerator()
-            if checker.check_token(user=User.objects.get(pk=pk), token=token):
-                flag = 'get'
-            else:
-                flag = 'token-fail'
+        checker = PasswordResetTokenGenerator()
+        if checker.check_token(user=user, token=token):
+            form = ResetPasswordForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+                user.set_password(cd['password1'])
+                user.save()
+                return render(request, 'account/reset_password_success.html', {'now': now})
             
-        except:
-            flag = 'anon'
-        form = ResetPasswordForm()
-    return render(request, 'account/reset_password.html', {'form': form, 'flag': flag})
-    
+    else:
+
+        checker = PasswordResetTokenGenerator()
+        if checker.check_token(user=user, token=token):
+            form = ResetPasswordForm()
+            return render(request, 'account/reset_password_get.html', {'form': form, 'now': now})
+    return render(request, 'account/reset_password_token_fail.html', {'now': now})
+
+
 def forgot_password(request):
 
     '''метод для не вошедшего пользователя: отправка письма с токеном'''

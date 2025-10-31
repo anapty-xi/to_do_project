@@ -11,7 +11,7 @@ def get_user_friends(user):
 
 
 
-'''отправка электронных писем'''
+'''отправка электронных писем(tested)'''
 
 def your_todo_has_confirmed_mail(user_email, username, todo_name):
     subject = 'Ваше Todo подтверждено!'
@@ -41,7 +41,7 @@ def friends_reminder_mail(user, friends):
 
 
 
-'''операции с ToDo'''
+'''операции с ToDo(tested)'''
 
 def get_todo_by_pk_slug(pk, slug):
     return Todo.objects.get(pk=pk, slug=slug)
@@ -77,7 +77,7 @@ def todo_change_status(pk, slug, status):
 
 
 
-'''операции с TodoReport'''
+'''операции с TodoReport(tested)'''
 def report_add(pk, slug, cd):
     todo = get_todo_by_pk_slug(pk, slug)
     report = TodoReport(description = cd['description'])

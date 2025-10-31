@@ -6,6 +6,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import EmailMessage
 
 
+'''получение user (tested)'''
 
 def get_user_by_pk_username(pk, username):
     return User.objects.get(pk=pk, username=username)
@@ -39,7 +40,7 @@ def user_register(cd):
 
 def make_token(user: User):
     token = PasswordResetTokenGenerator()
-    token = token.make_token(user)
+    return token.make_token(user)
 
 def reset_password_email(user: User, token: PasswordResetTokenGenerator):
     subject = f'Изменита пораль аккаунта {user.username}'
@@ -55,7 +56,7 @@ def reset_password_email(user: User, token: PasswordResetTokenGenerator):
 
 
 
-'''возврат атрибутов связных моделей с User'''
+'''возврат атрибутов связных моделей с User (tested)'''
 
 def get_user_todos(user):
     return Todo.objects.filter(user=user)
@@ -64,7 +65,7 @@ def get_user_friends(user):
     return user.profile.friends.all()
 
 
-'''обновления профиля для моделей User И Profile'''
+'''обновления профиля для моделей User И Profile (tested)'''
 
 def user_profile_update_user_model(request, cd):
     User.objects.filter(id=request.user.id).update(username=cd['username'],

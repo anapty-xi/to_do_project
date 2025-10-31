@@ -7,6 +7,8 @@ from django.urls import reverse
 
 pytestmark = pytest.mark.django_db
 
+'''операции с ToDo'''
+
 @pytest.mark.ServircesTodoTests
 def test_get_todo_by_slug(todo_test):
     todo_to_get = todo_test
@@ -48,7 +50,7 @@ def test_todo_change_status(todo_test):
     assert todo_to_change_status_pk == changed.pk and changed.status == status
 
 
-
+'''операции с TodoReport'''
 
 @pytest.mark.ServircesTodoReportTests
 def test_report_add(todo_test):
@@ -71,7 +73,7 @@ def test_report_edit(report_test):
 
 
 @pytest.mark.TodosResponseTests
-def test_homepage(client, django_user_model):
+def test_todo_info(client, django_user_model):
     username = 'test'
     password = '1111'
     user = django_user_model.objects.create_user(username=username, password=password)
@@ -133,5 +135,6 @@ def test_todo_confirm_response(client, todo_test, user_test):
     response = response = client.post(reverse('todos:todo_confirm', 
                                    kwargs={'pk': todo_test.pk, 'slug': todo_test.slug}))
     assert response.status_code == 302
+
                    
    
