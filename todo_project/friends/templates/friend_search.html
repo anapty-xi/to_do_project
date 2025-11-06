@@ -60,14 +60,15 @@
                     </form>
                 </div>
             </div>
-        <div class="d-flex justify-content-center">
+        <row>
+            <div class="d-flex flex-wrap justify-content-start" style="margin-left: 4rem;">
 
                 {% for user in user_queryset %}
                 <div class="card" style="width: 18rem; margin: 2rem; height: 20rem;">
                     {% if user.profile.photo %}
-                    <img src="{{ user.profile.photo.url }}" class="card-img-top" style="height: 15rem; width: 15rem;">
+                    <img src="{{ user.profile.photo.url }}" class="card-img-top" style="height: 15rem; width: 18rem;">
                     {% else %}
-                    <img src="{% static 'user_placeholder.png' %}" class="card-img-top" style="height: 15rem; width: 15rem;">
+                    <img src="{% static 'user_placeholder.png' %}" class="card-img-top" style="height: 15rem; width: 18rem;">
                     {% endif %}
                     <div class="card-body">
                         <p class="card-text mb-0">
@@ -77,6 +78,8 @@
                     </div>
                 </div>
                 {% endfor %}   
+        </row>
+        
 
 
         </div>       
